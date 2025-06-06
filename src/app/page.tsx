@@ -9,7 +9,7 @@ import Link from 'next/link'
 const slides = [
   {
     id: 1,
-    video: '/videos/Graphic Desin 001.mp4',
+    video: '/videos/graphic-design-001.mp4',
     title: 'Designs That Speak Volumes',
     subtitle: 'Crafting compelling visual stories that elevate your brand',
     highlight: 'Creative Excellence',
@@ -20,7 +20,7 @@ const slides = [
   },
   {
     id: 2,
-    video: '/videos/Graphic Desin 002.mp4',
+    video: '/videos/graphic-design-002.mp4',
     title: 'Innovative Brand Solutions',
     subtitle: 'Transforming ideas into impactful digital experiences',
     highlight: 'Digital Innovation',
@@ -31,7 +31,7 @@ const slides = [
   },
   {
     id: 3,
-    video: '/videos/Graphic Desin 003.mp4',
+    video: '/videos/graphic-design-003.mp4',
     title: 'Creative Excellence',
     subtitle: 'Where imagination meets strategic design',
     highlight: 'Strategic Design',
@@ -233,6 +233,7 @@ export default function Home() {
   const scale = useTransform(scrollY, [0, 300], [1, 1.2])
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [videoError, setVideoError] = useState<boolean>(false)
 
   useEffect(() => {
     // Initialize video refs
@@ -242,6 +243,11 @@ export default function Home() {
     videoRefs.current.forEach(video => {
       if (video) {
         video.playbackRate = 0.75
+        // Add error handling
+        video.onerror = () => {
+          console.error('Error loading video:', video.src)
+          setVideoError(true)
+        }
       }
     })
 
@@ -290,22 +296,30 @@ export default function Home() {
               transition={{ duration: 1 }}
               className="absolute inset-0"
             >
-              <video
-                ref={(el) => {
-                  if (el) videoRefs.current[currentSlide] = el
-                }}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute w-full h-full object-cover"
-                style={{ 
-                  opacity: typeof opacity === 'number' ? opacity : opacity.get(),
-                  scale: typeof scale === 'number' ? scale : scale.get()
-                }}
-              >
-                <source src={slides[currentSlide].video} type="video/mp4" />
-              </video>
+              {videoError ? (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                  <p className="text-white">Video loading error. Please refresh the page.</p>
+                </div>
+              ) : (
+                <video
+                  ref={(el) => {
+                    if (el) videoRefs.current[currentSlide] = el
+                  }}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute w-full h-full object-cover"
+                  style={{ 
+                    opacity: typeof opacity === 'number' ? opacity : opacity.get(),
+                    scale: typeof scale === 'number' ? scale : scale.get()
+                  }}
+                  onError={() => setVideoError(true)}
+                >
+                  <source src={slides[currentSlide].video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
