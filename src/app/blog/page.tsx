@@ -102,10 +102,10 @@ const categories = [
   { id: 'print', name: 'Print Design' },
 ]
 
-const sendEmail = (e) => {
+const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
-  emailjs.sendForm('service_pcmah8t', 'template_3i0vuek', e.target, 'meritmediapro007@gmail.com')
+  emailjs.sendForm('service_pcmah8t', 'template_3i0vuek', e.currentTarget, 'meritmediapro007@gmail.com')
       .then((result) => {
           console.log('Email sent successfully:', result.text);
       }, (error) => {

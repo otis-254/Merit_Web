@@ -299,7 +299,10 @@ export default function Home() {
                 muted
                 playsInline
                 className="absolute w-full h-full object-cover"
-                style={{ opacity, scale }}
+                style={{ 
+                  opacity: typeof opacity === 'number' ? opacity : opacity.get(),
+                  scale: typeof scale === 'number' ? scale : scale.get()
+                }}
               >
                 <source src={slides[currentSlide].video} type="video/mp4" />
               </video>
