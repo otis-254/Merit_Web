@@ -963,7 +963,7 @@ const featuredWork = [
     title: 'Business Promo Ad',
     category: 'Motion Graphics',
     type: 'video',
-    media: '/portfolio/KALABAYI.mp4',
+    media: '/portfolio/KALABAYI_optimized.mp4',
     slug: 'business-promo'
   },
 ] 
