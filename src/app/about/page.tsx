@@ -4,6 +4,10 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import Image from 'next/image'
+import Link from 'next/link'
+import { FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md'
+import { BsArrowRight } from 'react-icons/bs'
 
 const team = [
   {
@@ -56,6 +60,79 @@ const values = [
   },
 ]
 
+const sections = [
+  {
+    id: "about-us",
+    title: "About Us",
+    content: `Merit Graphics is a creative agency dedicated to transforming brands through innovative design, strategic thinking, and a passion for visual storytelling. Our mission is to empower businesses with compelling visual identities and digital experiences that captivate audiences and drive results.
+
+We believe in the power of creativity to inspire change and make a lasting impact. From branding and UI/UX design to motion graphics and print, our team combines expertise with a collaborative approach to deliver solutions tailored to your unique needs.`
+  },
+  {
+    id: "vision-mission",
+    title: "Vision & Mission",
+    content: `Our Vision:
+To be the leading creative force in East Africa, known for innovative design solutions that transform businesses and create lasting impact.
+
+Our Mission:
+To empower businesses with exceptional design solutions that drive growth, enhance brand value, and create meaningful connections with their audience. We achieve this through:
+• Innovative Design Thinking
+• Strategic Brand Development
+• Client-Centric Approach
+• Excellence in Execution
+• Continuous Innovation`
+  },
+  {
+    id: "our-team",
+    title: "Our Team",
+    content: `Our team consists of passionate creatives, strategists, and technologists who work together to deliver exceptional results. Each team member brings unique expertise and perspective to every project, ensuring comprehensive solutions that meet and exceed client expectations.`
+  }
+]
+
+const catSection = {
+  title: "Let's Build with You!",
+  description: "Ready to transform your brand's visual identity? Let's create something extraordinary together.",
+  cta: {
+    primary: {
+      text: "Get Started",
+      href: "/contact",
+      description: "Start your project with us today"
+    },
+    secondary: {
+      text: "View Our Work",
+      href: "/portfolio",
+      description: "Explore our portfolio of successful projects"
+    }
+  }
+}
+
+const teamMembers = [
+  {
+    name: "Caleb Otis",
+    role: "Creative Director",
+    image: "/team/Team 01.jpeg",
+    description: "Visionary leader with 10+ years of experience in creative direction and brand strategy."
+  },
+  {
+    name: "Grace Nafula",
+    role: "Senior Designer",
+    image: "/team/Team 02.jpeg",
+    description: "Award-winning designer specializing in brand identity and digital experiences."
+  },
+  {
+    name: "James Ochieng",
+    role: "UX/UI Specialist",
+    image: "/team/Team 04.jpeg",
+    description: "Passionate about creating intuitive and engaging user experiences that drive results."
+  },
+  {
+    name: "Mildred Kerubo",
+    role: "Project Manager",
+    image: "/team/Team 03.jpeg",
+    description: "Expert in managing complex projects and ensuring seamless client communication."
+  }
+]
+
 export default function About() {
   return (
     <MainLayout>
@@ -77,7 +154,7 @@ export default function About() {
               <p className="mt-6 text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
                 At Merit Graphics, we're more than just a design agency. We're your creative partners in building exceptional digital experiences that leave lasting impressions.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <div className="mt-8 flex flex-wrap gap-4">
                 <motion.a
                   href="/portfolio"
                   whileHover={{ scale: 1.05 }}
@@ -101,11 +178,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, x: 200 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                duration: 1,
-                ease: [0.6, 0.01, 0.05, 0.95],
-                delay: 0.2
-              }}
+              transition={{ duration: 1, ease: [0.6, 0.01, 0.05, 0.95], delay: 0.2 }}
               className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 mix-blend-multiply rounded-2xl z-10" />
@@ -116,19 +189,6 @@ export default function About() {
                 className="object-cover rounded-2xl"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority
-              />
-              {/* Decorative Elements */}
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                className="absolute top-4 right-4 w-20 h-20 bg-primary-500/20 rounded-full blur-2xl z-0"
-              />
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute bottom-4 left-4 w-32 h-32 bg-secondary-500/20 rounded-full blur-2xl z-0"
               />
             </motion.div>
           </div>
@@ -168,46 +228,127 @@ export default function About() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Us and Vision & Mission Section */}
       <section className="py-24 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl lg:max-w-5xl">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Image Side */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* About Us Card */}
+            <div className="relative bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">About Us</h2>
+                <div className="space-y-4">
+                  {sections[0].content.split('\n').map((paragraph, index) => (
+                    <p key={index} className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Vision & Mission Card */}
+            <div className="relative bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-yellow-500 to-orange-500"></div>
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Vision & Mission</h2>
+                <div className="space-y-4">
+                  {sections[1].content.split('\n').map((paragraph, index) => (
+                    <p key={index} className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Team Section */}
+      <section id="our-team" className="py-24 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+              Our Team
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              Meet the talented individuals behind our creative success
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member) => (
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] }}
-              className="relative aspect-[4/5] rounded-2xl overflow-hidden w-full max-w-xs lg:max-w-sm lg:w-2/5 pr-0 lg:pr-8"
-            >
+                key={member.name}
+                whileHover={{ y: -5 }}
+                className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="relative h-64">
               <Image
-                src="/portfolio/001-1.jpg"
-                alt="Creative workspace"
+                    src={member.image}
+                    alt={member.name}
                 fill
                 className="object-cover"
-              />
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    {member.name}
+                  </h3>
+                  <p className="mt-1 text-primary-600 dark:text-primary-400">
+                    {member.role}
+                  </p>
+                  <p className="mt-4 text-gray-600 dark:text-gray-300">
+                    {member.description}
+                  </p>
+                </div>
             </motion.div>
-            {/* Text Side */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.6, 0.01, 0.05, 0.95] }}
-              className="text-left w-full lg:w-3/5 pl-0 lg:pl-12 py-8"
-            >
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-400 text-transparent bg-clip-text">
-                Who Are We?
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-20 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+              {catSection.title}
               </h2>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                Merit Graphics is a creative agency dedicated to transforming brands through innovative design, strategic thinking, and a passion for visual storytelling. Our mission is to empower businesses with compelling visual identities and digital experiences that captivate audiences and drive results.
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              {catSection.description}
+            </p>
+          </div>
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {catSection.cta.primary.text}
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-gray-300">
+                {catSection.cta.primary.description}
               </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                We believe in the power of creativity to inspire change and make a lasting impact. From branding and UI/UX design to motion graphics and print, our team combines expertise with a collaborative approach to deliver solutions tailored to your unique needs.
+              <Link
+                href={catSection.cta.primary.href}
+                className="mt-4 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+              >
+                Contact Us
+              </Link>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {catSection.cta.secondary.text}
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-gray-300">
+                {catSection.cta.secondary.description}
               </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300">
-                Discover how Merit Graphics can help elevate your brand and bring your vision to life. Let's create something extraordinary together.
-              </p>
-            </motion.div>
+              <Link
+                href={catSection.cta.secondary.href}
+                className="mt-4 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-primary-50 hover:bg-primary-100 dark:text-primary-400 dark:bg-gray-700 dark:hover:bg-gray-600"
+              >
+                View Portfolio
+              </Link>
+            </div>
           </div>
         </div>
       </section>

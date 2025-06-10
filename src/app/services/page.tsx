@@ -173,12 +173,14 @@ export default function Services() {
                 <button
                   key={service.id}
                   onClick={() => setActiveService(service.id)}
-                  className={`w-full rounded-lg p-6 text-left transition-colors ${
+                  className={`group relative w-full rounded-lg p-6 text-left transition-colors ${
                     activeService === service.id
                       ? 'bg-primary-50 text-primary-900 dark:bg-primary-900/20 dark:text-primary-400'
                       : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700'
                   }`}
                 >
+                  {/* Gradient Border */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-t-lg" />
                   <div className="flex items-center">
                     <div className="text-primary-600 dark:text-primary-400">
                       {service.icon}
@@ -187,22 +189,34 @@ export default function Services() {
                       {service.title}
                     </h3>
                   </div>
+                  {/* Hover Description */}
+                  <div className="absolute left-0 right-0 -bottom-2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg border border-gray-100 dark:border-gray-700">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>
 
             {/* Service Details */}
-            <div className="rounded-2xl bg-gray-50 p-8 dark:bg-gray-800">
+            <div className="rounded-2xl bg-gray-50 p-8 dark:bg-gray-800 relative">
+              {/* Gradient Border */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-t-lg" />
               <AnimatePresence mode="wait">
                 {services.map(
                   (service) =>
                     activeService === service.id && (
                       <motion.div
                         key={service.id}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
+                        id={service.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3 }}
+                        className="space-y-6"
                       >
                         <h2 className="font-display text-2xl font-bold text-gray-900 dark:text-white">
                           {service.title}

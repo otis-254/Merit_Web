@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence, useAnimation } from 'framer-motion'
 import { MainLayout } from '../components/layout/main-layout'
 import Link from 'next/link'
 
@@ -9,7 +9,7 @@ import Link from 'next/link'
 const slides = [
   {
     id: 1,
-    video: '/videos/graphic-design-001.mp4',
+    image: '/portfolio/hero-1.png',
     title: 'Designs That Speak Volumes',
     subtitle: 'Crafting compelling visual stories that elevate your brand',
     highlight: 'Creative Excellence',
@@ -20,7 +20,7 @@ const slides = [
   },
   {
     id: 2,
-    video: '/videos/graphic-design-002.mp4',
+    image: '/portfolio/hero-2.png',
     title: 'Innovative Brand Solutions',
     subtitle: 'Transforming ideas into impactful digital experiences',
     highlight: 'Digital Innovation',
@@ -31,7 +31,7 @@ const slides = [
   },
   {
     id: 3,
-    video: '/videos/graphic-design-003.mp4',
+    image: '/portfolio/hero-3.png',
     title: 'Creative Excellence',
     subtitle: 'Where imagination meets strategic design',
     highlight: 'Strategic Design',
@@ -47,18 +47,18 @@ const testimonials = [
   {
     id: 1,
     quote: "Merit Graphics transformed our brand identity completely. Their creative approach and attention to detail exceeded our expectations.",
-    author: "Sarah Johnson",
+    author: "Sarah Odhiambo",
     role: "Marketing Director",
     company: "TechVision Inc.",
-    image: "/testimonials/client1.jpg"
+    image: "/team/Cleint 003.jpg"
   },
   {
     id: 2,
     quote: "The team's innovative design solutions helped us increase our conversion rates by 40%. Truly exceptional work!",
-    author: "Michael Chen",
+    author: "Michael Nyambane",
     role: "CEO",
     company: "GrowthLabs",
-    image: "/testimonials/client2.jpg"
+    image: "/team/Cleint 001.jpg"
   },
   {
     id: 3,
@@ -66,7 +66,7 @@ const testimonials = [
     author: "Emma Rodriguez",
     role: "Brand Manager",
     company: "Creative Solutions",
-    image: "/testimonials/client3.jpg"
+    image: "/team/Sarah.jpg"
   }
 ]
 
@@ -222,35 +222,191 @@ const designServices = [
   "Banner Design",
   "Digital Marketing Design",
   "Email Template Design",
-  "Presentation Design"
+  "Presentation Design",
+  "Web Development",
+  "Mobile App Development",
+  "E-commerce Development",
+  "Custom Software Development"
 ]
+
+const faqResponses = {
+  greeting: "Hello! Thanks for Contacting Merit Graphics Customer Agent. How can I help you today?",
+  default: "Thanks for asking! For more detailed response on your inquiries, please contact our team directly at +254 714 531 574.",
+  questions: {
+    "pricing": "Our pricing varies based on project scope and requirements. Basic logo design starts from $200, while comprehensive brand identity packages begin at $500. Would you like to discuss your specific needs?",
+    "timeline": "Project timelines typically range from 2-4 weeks for basic designs to 6-8 weeks for comprehensive brand packages. We'll provide a detailed timeline after understanding your requirements.",
+    "process": "Our process includes: 1) Discovery & Research, 2) Strategy Development, 3) Design Creation, and 4) Final Delivery. We maintain clear communication throughout each phase.",
+    "services": "We offer: Brand Identity Design, Logo Design, UI/UX Design, Web Design, Print Design, Packaging Design, Motion Graphics, and Social Media Graphics. What specific service interests you?",
+    "portfolio": "You can view our portfolio at /portfolio. We've worked with various industries including tech, retail, and healthcare.",
+    "payment": "We accept various payment methods including bank transfers, PayPal, and mobile money. A 50% deposit is required to start the project.",
+    "revisions": "We offer 3 rounds of revisions for each design phase to ensure your complete satisfaction.",
+    "deliverables": "You'll receive all source files, including editable formats (AI, PSD, etc.), and usage guidelines. For web projects, we provide fully responsive designs.",
+    "experience": "We have over 10 years of experience in the design industry, working with clients across various sectors including technology, healthcare, retail, and education.",
+    "team": "Our team consists of experienced designers, developers, and project managers who work together to deliver exceptional results.",
+    "location": "We're based in Kenya but work with clients globally. Our team can collaborate effectively across different time zones.",
+    "start": "To start a project, simply share your requirements with us. We'll schedule a consultation to discuss your needs in detail and provide a customized proposal.",
+    "support": "We provide ongoing support and maintenance for all our projects. Our team is always available to assist with any updates or changes you need.",
+    "quality": "We maintain high quality standards through our rigorous review process. Each design goes through multiple quality checks before delivery.",
+    "communication": "We use various communication tools including email, WhatsApp, and video calls to ensure smooth collaboration throughout the project.",
+    "packages": "We offer different packages: Basic (Logo + Basic Branding), Standard (Full Brand Identity), and Premium (Complete Brand Solution with Marketing Materials).",
+    "rush": "Yes, we offer rush services for urgent projects. Additional fees may apply depending on the timeline requirements.",
+    "copyright": "Once the project is completed and fully paid, you'll own all rights to the designs. We'll provide a transfer of rights document.",
+    "maintenance": "We offer maintenance packages for websites and ongoing design support. These can be discussed based on your specific needs.",
+    "collaboration": "We welcome client collaboration throughout the design process. Your feedback is crucial in creating designs that meet your vision.",
+    "guarantee": "We guarantee your satisfaction with our work. If you're not happy with the initial concepts, we'll revise them until you're satisfied."
+  }
+}
+
+const getBotResponse = (message: string) => {
+  const lowerMessage = message.toLowerCase()
+  
+  // Check for greetings
+  if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey') || 
+      lowerMessage.includes('good morning') || lowerMessage.includes('good afternoon') || lowerMessage.includes('good evening')) {
+    return faqResponses.greeting
+  }
+  
+  // Check for pricing related questions
+  if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much') || 
+      lowerMessage.includes('budget') || lowerMessage.includes('fee') || lowerMessage.includes('charge')) {
+    return faqResponses.questions.pricing
+  }
+  
+  // Check for timeline related questions
+  if (lowerMessage.includes('time') || lowerMessage.includes('duration') || lowerMessage.includes('how long') || 
+      lowerMessage.includes('when') || lowerMessage.includes('deadline') || lowerMessage.includes('schedule')) {
+    return faqResponses.questions.timeline
+  }
+  
+  // Check for process related questions
+  if (lowerMessage.includes('process') || lowerMessage.includes('how do you work') || lowerMessage.includes('steps') || 
+      lowerMessage.includes('methodology') || lowerMessage.includes('approach') || lowerMessage.includes('workflow')) {
+    return faqResponses.questions.process
+  }
+  
+  // Check for services related questions
+  if (lowerMessage.includes('service') || lowerMessage.includes('what do you do') || lowerMessage.includes('offer') || 
+      lowerMessage.includes('design') || lowerMessage.includes('create') || lowerMessage.includes('make')) {
+    return faqResponses.questions.services
+  }
+  
+  // Check for portfolio related questions
+  if (lowerMessage.includes('portfolio') || lowerMessage.includes('work') || lowerMessage.includes('projects') || 
+      lowerMessage.includes('examples') || lowerMessage.includes('previous') || lowerMessage.includes('case studies')) {
+    return faqResponses.questions.portfolio
+  }
+  
+  // Check for payment related questions
+  if (lowerMessage.includes('payment') || lowerMessage.includes('pay') || lowerMessage.includes('deposit') || 
+      lowerMessage.includes('invoice') || lowerMessage.includes('billing') || lowerMessage.includes('money')) {
+    return faqResponses.questions.payment
+  }
+  
+  // Check for revision related questions
+  if (lowerMessage.includes('revision') || lowerMessage.includes('change') || lowerMessage.includes('edit') || 
+      lowerMessage.includes('modify') || lowerMessage.includes('adjust') || lowerMessage.includes('update')) {
+    return faqResponses.questions.revisions
+  }
+  
+  // Check for deliverables related questions
+  if (lowerMessage.includes('deliver') || lowerMessage.includes('file') || lowerMessage.includes('format') || 
+      lowerMessage.includes('receive') || lowerMessage.includes('get') || lowerMessage.includes('final')) {
+    return faqResponses.questions.deliverables
+  }
+
+  // Check for experience related questions
+  if (lowerMessage.includes('experience') || lowerMessage.includes('years') || lowerMessage.includes('long') || 
+      lowerMessage.includes('background') || lowerMessage.includes('history')) {
+    return faqResponses.questions.experience
+  }
+
+  // Check for team related questions
+  if (lowerMessage.includes('team') || lowerMessage.includes('designer') || lowerMessage.includes('who') || 
+      lowerMessage.includes('people') || lowerMessage.includes('staff')) {
+    return faqResponses.questions.team
+  }
+
+  // Check for location related questions
+  if (lowerMessage.includes('location') || lowerMessage.includes('where') || lowerMessage.includes('based') || 
+      lowerMessage.includes('country') || lowerMessage.includes('timezone')) {
+    return faqResponses.questions.location
+  }
+
+  // Check for project start related questions
+  if (lowerMessage.includes('start') || lowerMessage.includes('begin') || lowerMessage.includes('get started') || 
+      lowerMessage.includes('how to') || lowerMessage.includes('first step')) {
+    return faqResponses.questions.start
+  }
+
+  // Check for support related questions
+  if (lowerMessage.includes('support') || lowerMessage.includes('help') || lowerMessage.includes('assist') || 
+      lowerMessage.includes('maintenance') || lowerMessage.includes('after')) {
+    return faqResponses.questions.support
+  }
+
+  // Check for quality related questions
+  if (lowerMessage.includes('quality') || lowerMessage.includes('standard') || lowerMessage.includes('excellence') || 
+      lowerMessage.includes('best') || lowerMessage.includes('high')) {
+    return faqResponses.questions.quality
+  }
+
+  // Check for communication related questions
+  if (lowerMessage.includes('communication') || lowerMessage.includes('contact') || lowerMessage.includes('reach') || 
+      lowerMessage.includes('talk') || lowerMessage.includes('discuss')) {
+    return faqResponses.questions.communication
+  }
+
+  // Check for packages related questions
+  if (lowerMessage.includes('package') || lowerMessage.includes('plan') || lowerMessage.includes('option') || 
+      lowerMessage.includes('tier') || lowerMessage.includes('level')) {
+    return faqResponses.questions.packages
+  }
+
+  // Check for rush service related questions
+  if (lowerMessage.includes('rush') || lowerMessage.includes('urgent') || lowerMessage.includes('quick') || 
+      lowerMessage.includes('fast') || lowerMessage.includes('emergency')) {
+    return faqResponses.questions.rush
+  }
+
+  // Check for copyright related questions
+  if (lowerMessage.includes('copyright') || lowerMessage.includes('rights') || lowerMessage.includes('ownership') || 
+      lowerMessage.includes('legal') || lowerMessage.includes('license')) {
+    return faqResponses.questions.copyright
+  }
+
+  // Check for maintenance related questions
+  if (lowerMessage.includes('maintenance') || lowerMessage.includes('update') || lowerMessage.includes('change') || 
+      lowerMessage.includes('modify') || lowerMessage.includes('edit')) {
+    return faqResponses.questions.maintenance
+  }
+
+  // Check for collaboration related questions
+  if (lowerMessage.includes('collaborate') || lowerMessage.includes('work together') || lowerMessage.includes('involve') || 
+      lowerMessage.includes('participate') || lowerMessage.includes('contribute')) {
+    return faqResponses.questions.collaboration
+  }
+
+  // Check for guarantee related questions
+  if (lowerMessage.includes('guarantee') || lowerMessage.includes('satisfaction') || lowerMessage.includes('happy') || 
+      lowerMessage.includes('sure') || lowerMessage.includes('promise')) {
+    return faqResponses.questions.guarantee
+  }
+  
+  return faqResponses.default
+}
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
   const { scrollY } = useScroll()
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
   const scale = useTransform(scrollY, [0, 300], [1, 1.2])
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [videoError, setVideoError] = useState<boolean>(false)
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
+  const [selectedWork, setSelectedWork] = useState<typeof featuredWork[0] | null>(null)
 
   useEffect(() => {
-    // Initialize video refs
-    videoRefs.current = videoRefs.current.slice(0, slides.length)
-    
-    // Set playback rate for all videos
-    videoRefs.current.forEach(video => {
-      if (video) {
-        video.playbackRate = 0.75
-        // Add error handling
-        video.onerror = () => {
-          console.error('Error loading video:', video.src)
-          setVideoError(true)
-        }
-      }
-    })
-
     // Auto-advance slides
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
@@ -268,25 +424,33 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-  }
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (message.trim()) {
+      setMessages([...messages, { text: message, sender: 'user' }])
+      setMessage('')
+      // Add bot response
+      setTimeout(() => {
+        const botResponse = getBotResponse(message)
+        setMessages(prev => [...prev, { 
+          text: botResponse, 
+          sender: 'bot' 
+        }])
+      }, 1000)
+    }
+  }
+
   return (
     <MainLayout>
-      {/* Hero Section with Video Carousel */}
+      {/* Hero Section with Photo Carousel */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Carousel */}
+        {/* Photo Carousel */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/40 z-10" />
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -296,30 +460,19 @@ export default function Home() {
               transition={{ duration: 1 }}
               className="absolute inset-0"
             >
-              {videoError ? (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-                  <p className="text-white">Video loading error. Please refresh the page.</p>
-                </div>
-              ) : (
-                <video
-                  ref={(el) => {
-                    if (el) videoRefs.current[currentSlide] = el
-                  }}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute w-full h-full object-cover"
-                  style={{ 
-                    opacity: typeof opacity === 'number' ? opacity : opacity.get(),
-                    scale: typeof scale === 'number' ? scale : scale.get()
-                  }}
-                  onError={() => setVideoError(true)}
-                >
-                  <source src={slides[currentSlide].video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )}
+              <img
+                src={slides[currentSlide].image}
+                alt={slides[currentSlide].title}
+                className="absolute w-full h-full object-cover"
+                style={{ 
+                  opacity: typeof opacity === 'number' ? opacity : opacity.get(),
+                  scale: typeof scale === 'number' ? scale : scale.get()
+                }}
+                onError={(e) => {
+                  console.error('Error loading image:', slides[currentSlide].image);
+                  e.currentTarget.src = '/portfolio/001.jpg'; // Fallback image
+                }}
+              />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -425,7 +578,7 @@ export default function Home() {
         {/* Carousel Navigation */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex items-center space-x-4">
           <button
-            onClick={prevSlide}
+            onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
             className="p-3 rounded-full bg-white/10 hover:bg-primary-500 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm border border-white/20"
             aria-label="Previous slide"
           >
@@ -448,7 +601,7 @@ export default function Home() {
           </div>
 
           <button
-            onClick={nextSlide}
+            onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
             className="p-3 rounded-full bg-white/10 hover:bg-primary-500 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm border border-white/20"
             aria-label="Next slide"
           >
@@ -512,6 +665,8 @@ export default function Home() {
                 whileHover={{ y: -5 }}
                 className="group relative rounded-2xl bg-gray-50 p-8 dark:bg-gray-800 overflow-hidden"
               >
+                {/* Gradient Border */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500" />
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10">
                   <div className="text-primary-600 dark:text-primary-400 transform group-hover:scale-110 transition-transform duration-300">
@@ -529,13 +684,14 @@ export default function Home() {
           </div>
 
           {/* Scrolling Services List */}
-          <div className="mt-20 relative overflow-hidden">
+          <div className="mt-20 relative overflow-hidden w-full">
             <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
             <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
             
-            <div className="flex overflow-x-hidden">
+            {/* First Line */}
+            <div className="flex overflow-x-hidden w-full mb-2">
               <motion.div
-                className="flex space-x-8"
+                className="flex gap-2"
                 animate={{
                   x: ["0%", "-50%"],
                 }}
@@ -543,40 +699,147 @@ export default function Home() {
                   x: {
                     repeat: Infinity,
                     repeatType: "loop",
-                    duration: 30,
+                    duration: 40,
                     ease: "linear",
                   },
                 }}
                 style={{
                   width: "fit-content",
                 }}
+                whileHover={{ animationPlayState: "paused" }}
               >
-                {/* First set of items */}
-                {designServices.map((service, index) => (
+                {designServices.slice(0, 8).map((service, index) => (
                   <motion.div
                     key={`service-1-${index}`}
-                    className="flex-shrink-0 px-6 py-3 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
                     whileHover={{
-                      scale: 1.05,
+                      scale: 1.15,
                       backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
                     }}
                   >
-                    <span className="text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
                       {service}
                     </span>
                   </motion.div>
                 ))}
-                {/* Duplicate set for seamless loop */}
-                {designServices.map((service, index) => (
+                {designServices.slice(0, 8).map((service, index) => (
                   <motion.div
-                    key={`service-2-${index}`}
-                    className="flex-shrink-0 px-6 py-3 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    key={`service-1-dup-${index}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
                     whileHover={{
-                      scale: 1.05,
+                      scale: 1.15,
                       backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
                     }}
                   >
-                    <span className="text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                      {service}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Second Line */}
+            <div className="flex overflow-x-hidden w-full mb-2">
+              <motion.div
+                className="flex gap-2"
+                animate={{
+                  x: ["-50%", "0%"],
+                }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 50,
+                    ease: "linear",
+                  },
+                }}
+                style={{
+                  width: "fit-content",
+                }}
+                whileHover={{ animationPlayState: "paused" }}
+              >
+                {designServices.slice(8, 16).map((service, index) => (
+                  <motion.div
+                    key={`service-2-${index}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    whileHover={{
+                      scale: 1.15,
+                      backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                      {service}
+                    </span>
+                  </motion.div>
+                ))}
+                {designServices.slice(8, 16).map((service, index) => (
+                  <motion.div
+                    key={`service-2-dup-${index}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    whileHover={{
+                      scale: 1.15,
+                      backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                      {service}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Third Line */}
+            <div className="flex overflow-x-hidden w-full">
+              <motion.div
+                className="flex gap-2"
+                animate={{
+                  x: ["0%", "-50%"],
+                }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 45,
+                    ease: "linear",
+                  },
+                }}
+                style={{
+                  width: "fit-content",
+                }}
+                whileHover={{ animationPlayState: "paused" }}
+              >
+                {designServices.slice(16).map((service, index) => (
+                  <motion.div
+                    key={`service-3-${index}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    whileHover={{
+                      scale: 1.15,
+                      backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
+                      {service}
+                    </span>
+                  </motion.div>
+                ))}
+                {designServices.slice(16).map((service, index) => (
+                  <motion.div
+                    key={`service-3-dup-${index}`}
+                    className="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 rounded-full backdrop-blur-sm border border-primary-500/20 dark:border-primary-500/10"
+                    whileHover={{
+                      scale: 1.15,
+                      backgroundColor: "rgba(var(--color-primary-500), 0.15)",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <span className="text-sm text-primary-600 dark:text-primary-400 font-medium whitespace-nowrap">
                       {service}
                     </span>
                   </motion.div>
@@ -653,8 +916,8 @@ export default function Home() {
                     <p className="mt-2 text-sm text-gray-200">
                       {work.category}
                     </p>
-                    <Link
-                      href={`/portfolio/${work.slug}`}
+                    <button
+                      onClick={() => setSelectedWork(work)}
                       className="mt-4 inline-flex items-center text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors duration-300"
                     >
                       View Case Study
@@ -671,7 +934,7 @@ export default function Home() {
                           d="M17 8l4 4m0 0l-4 4m4-4H3"
                         />
                       </svg>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -759,7 +1022,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="py-24 bg-white dark:bg-gray-900 overflow-hidden">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -776,41 +1039,87 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-                <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-full">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.author}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        {testimonial.author}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {testimonial.role} at {testimonial.company}
-                      </p>
+          <div className="mt-20 relative">
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
+            
+            <div 
+              className="flex space-x-8 animate-scroll hover:pause"
+              style={{
+                width: "fit-content",
+                animation: "scroll 30s linear infinite",
+              }}
+            >
+              {/* First set of testimonials */}
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={`testimonial-1-${index}`}
+                  className="flex-shrink-0 w-[400px]"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
+                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.author}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            {testimonial.author}
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {testimonial.role} at {testimonial.company}
+                          </p>
+                        </div>
+                      </div>
+                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400">
+                        "{testimonial.quote}"
+                      </blockquote>
                     </div>
                   </div>
-                  <blockquote className="mt-6 text-gray-600 dark:text-gray-400">
-                    "{testimonial.quote}"
-                  </blockquote>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+              
+              {/* Duplicate set for seamless loop */}
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={`testimonial-2-${index}`}
+                  className="flex-shrink-0 w-[400px]"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
+                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.author}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            {testimonial.author}
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {testimonial.role} at {testimonial.company}
+                          </p>
+                        </div>
+                      </div>
+                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400">
+                        "{testimonial.quote}"
+                      </blockquote>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -878,30 +1187,69 @@ export default function Home() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
+            className="fixed bottom-24 right-6 z-50 w-72 sm:w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
           >
             <div className="p-4 bg-primary-500 text-white">
-              <h3 className="font-semibold">Chat with us</h3>
-              <p className="text-sm text-white/80">We're here to help!</p>
-            </div>
-            <div className="p-4 h-96 overflow-y-auto">
-              {/* Chat messages would go here */}
-              <div className="text-center text-gray-500 dark:text-gray-400">
-                Start a conversation with our team
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="h-10 w-10 rounded-full overflow-hidden ring-2 ring-white/20">
+                    <img
+                      src="/team/Chat.jpg"
+                      alt="Support Agent"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-400 rounded-full ring-2 ring-white"></div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm">Chat with us</h3>
+                  <p className="text-xs text-white/80">We're here to help!</p>
+                </div>
               </div>
             </div>
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex space-x-2">
+            <div className="p-4 h-64 overflow-y-auto">
+              {messages.length === 0 ? (
+                <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  Start a conversation with our team
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div
+                        className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
+                          msg.sender === 'user'
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        }`}
+                      >
+                        {msg.text}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex space-x-3">
                 <input
                   type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="flex-1 px-4 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
-                <button className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
+                <button 
+                  type="submit"
+                  className="px-4 py-2.5 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600 transition-colors"
+                >
                   Send
                 </button>
               </div>
-            </div>
+            </form>
           </motion.div>
         )}
       </AnimatePresence>
@@ -924,63 +1272,171 @@ export default function Home() {
           </motion.button>
         )}
       </AnimatePresence>
+
+      {/* Featured Work Modal */}
+      <AnimatePresence>
+        {selectedWork && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            onClick={() => setSelectedWork(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedWork(null)}
+                className="absolute top-4 right-4 p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors z-10"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600 dark:text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+
+              {/* Modal Content */}
+              <div className="p-6">
+                <div className="aspect-w-16 aspect-h-9 mb-6">
+                  {selectedWork.type === 'video' ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover rounded-lg"
+                    >
+                      <source src={selectedWork.media} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img
+                      src={selectedWork.media}
+                      alt={selectedWork.title}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  )}
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  {selectedWork.title}
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                  {selectedWork.category}
+                </p>
+                <div className="prose dark:prose-invert max-w-none">
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {selectedWork.description}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </MainLayout>
   )
 }
 
 const services = [
   {
-    name: 'Brand Identity',
-    description: 'Create a unique and memorable brand identity that resonates with your target audience.',
+    name: "Brand Identity",
+    description: "Create a unique and memorable brand identity that resonates with your target audience.",
     icon: (
-      <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
       </svg>
-    ),
+    )
   },
   {
-    name: 'UI/UX Design',
-    description: 'Design intuitive and engaging user interfaces that provide exceptional user experiences.',
+    name: "UI/UX Design",
+    description: "Design intuitive and engaging user experiences that delight your customers.",
     icon: (
-      <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
-    ),
+    )
   },
   {
-    name: 'Motion Graphics',
-    description: 'Bring your brand to life with captivating motion graphics and animations.',
+    name: "Motion Graphics",
+    description: "Bring your brand to life with captivating motion graphics and animations.",
     icon: (
-      <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
       </svg>
-    ),
+    )
   },
+  {
+    name: "Print Design",
+    description: "Create stunning print materials that make a lasting impression.",
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+      </svg>
+    )
+  },
+  {
+    name: "Web/App Development",
+    description: "Build modern, responsive websites and applications that drive results.",
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    )
+  }
 ]
 
-const featuredWork = [
+type FeaturedWork = {
+  id: string
+  title: string
+  category: string
+  type: 'image' | 'video'
+  media: string
+  slug: string
+  description: string
+}
+
+const featuredWork: FeaturedWork[] = [
   {
-    id: 'brand-refresh',
-    title: 'Modern Brand Refresh',
-    category: 'Brand Identity',
+    id: 'brand-identity',
+    title: 'Brand Identity Design',
+    category: 'Branding',
     type: 'image',
-    media: '/portfolio/001.jpg',
-    slug: 'brand-refresh'
+    media: '/portfolio/brand-identity.jpg',
+    slug: 'brand-identity',
+    description: 'Comprehensive brand identity design including logo, color palette, typography, and brand guidelines.'
   },
   {
-    id: 'ecommerce-platform',
-    title: 'E-commerce Platform',
-    category: 'UI/UX Design',
+    id: 'ui-ux',
+    title: 'UI/UX Design',
+    category: 'Digital Design',
     type: 'image',
-    media: '/portfolio/Web.jpeg',
-    slug: 'ecommerce-platform'
+    media: '/portfolio/ui-ux.jpg',
+    slug: 'ui-ux',
+    description: 'User-centered interface design with intuitive navigation and engaging user experience.'
   },
   {
-    id: 'business-promo',
-    title: 'Business Promo Ad',
-    category: 'Motion Graphics',
+    id: 'motion',
+    title: 'Motion Graphics',
+    category: 'Animation',
     type: 'video',
-    media: '/portfolio/KALABAYI_optimized.mp4',
-    slug: 'business-promo'
-  },
+    media: '/portfolio/motion.mp4',
+    slug: 'motion',
+    description: 'Dynamic motion graphics and animations that bring your brand to life.'
+  }
 ] 

@@ -1,83 +1,92 @@
 'use client'
 
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { MainLayout } from '../../components/layout/main-layout'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const projects = [
   {
     id: 1,
-    title: 'Modern Brand Refresh',
-    category: 'branding',
-    description: 'Complete brand transformation for a tech startup, including logo design, visual identity, and brand guidelines.',
+    title: 'Brand Identity Design',
+    description: 'Comprehensive brand identity design including logo, color palette, typography, and brand guidelines.',
     image: '/portfolio/001.jpg',
     tags: ['Brand Identity', 'Logo Design', 'Visual Identity'],
+    link: '/services/brand-identity'
   },
   {
     id: 2,
-    title: 'E-commerce Platform',
-    category: 'ui-ux',
-    description: 'User-centered design for an online retail platform, focusing on intuitive navigation and seamless shopping experience.',
+    title: 'E-commerce Website Design',
+    description: 'Modern and user-friendly e-commerce website design with focus on conversion optimization.',
     image: '/portfolio/web 02.jpeg',
     tags: ['UI/UX Design', 'E-commerce', 'Web Design'],
+    link: '/services/ui-ux'
   },
   {
     id: 3,
-    title: 'Business Promo Ad',
-    category: 'motion',
-    description: 'Animated campaign for a new product launch, including social media content and promotional videos.',
-    image: '/portfolio/KALABAYI.mp4',
+    title: 'Motion Graphics',
+    description: 'Engaging motion graphics and animation for social media and business promotion.',
+    image: '/portfolio/hero-2.png',
     tags: ['Motion Graphics', 'Animation', 'Social Media' , 'Business Promo Ad'],
+    link: '/services/motion-graphics'
   },
   {
     id: 4,
-    title: 'Corporate Brochure',
-    category: 'print',
-    description: 'Design and layout of a comprehensive corporate brochure showcasing company services and achievements.',
+    title: 'Brochure Design',
+    description: 'Professional brochure design with compelling layout and typography.',
     image: '/portfolio/Brochure.png',
     tags: ['Print Design', 'Brochure', 'Layout'],
+    link: '/services/print-design'
   },
   {
     id: 5,
-    title: 'Mobile App Interface',
-    category: 'ui-ux',
-    description: 'User interface design for a mobile application, focusing on accessibility and user experience.',
+    title: 'Mobile App Design',
+    description: 'Intuitive and modern mobile app interface design with focus on user experience.',
     image: '/portfolio/App.jpeg',
     tags: ['UI/UX Design', 'Mobile App', 'Interface Design'],
+    link: '/services/ui-ux'
   },
   {
     id: 6,
     title: 'Brand Guidelines',
-    category: 'branding',
-    description: 'Comprehensive brand guidelines for a financial institution, ensuring consistent brand application across all touchpoints.',
+    description: 'Comprehensive brand guidelines ensuring consistent brand application across all touchpoints.',
     image: '/portfolio/Brand.jpg',
     tags: ['Brand Identity', 'Brand Guidelines', 'Visual Identity'],
+    link: '/services/brand-identity'
   },
   {
     id: 7,
-    title: 'Event Poster Series',
-    category: 'print',
-    description: 'A vibrant poster series for a local arts festival, blending illustration and bold typography.',
+    title: 'Poster Series',
+    description: 'Creative poster series design with unique illustrations and typography.',
     image: '/portfolio/poster-series.jpg',
     tags: ['Print Design', 'Poster', 'Illustration'],
+    link: '/services/print-design'
   },
   {
     id: 8,
-    title: 'Luxury Product Packaging',
-    category: 'print',
-    description: 'Elegant packaging design for a luxury skincare brand, focusing on tactile finishes and premium feel.',
+    title: 'Luxury Packaging',
+    description: 'Premium packaging design for luxury products with attention to detail.',
     image: '/portfolio/Brand 02.jpg',
     tags: ['Print Design', 'Packaging', 'Luxury'],
+    link: '/services/print-design'
   },
   {
     id: 9,
-    title: 'Annual Report Layout',
-    category: 'print',
-    description: 'Clean, data-driven layout for a corporate annual report, balancing infographics and readability.',
+    title: 'Annual Report',
+    description: 'Professional annual report design with data visualization and infographics.',
     image: '/portfolio/Annual.png',
     tags: ['Print Design', 'Report', 'Infographics'],
+    link: '/services/print-design'
   },
+  {
+    id: 10,
+    title: 'Web Application Development',
+    description: 'Full-stack web application development with modern technologies and responsive design.',
+    image: '/portfolio/web-app.jpeg',
+    tags: ['Web Development', 'Full Stack', 'Responsive Design'],
+    link: '/services/web-app-development'
+  }
 ]
 
 const categories = [
@@ -88,209 +97,220 @@ const categories = [
   { id: 'print', name: 'Print Design' },
 ]
 
-export default function Portfolio() {
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
+const Portfolio = () => {
+  const [mounted, setMounted] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
-  const filteredProjects = selectedCategory === 'all'
-    ? projects
-    : projects.filter((project) => project.category === selectedCategory)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleImageClick = (image: string) => {
+    setSelectedImage(image)
+  }
+
+  const handleCloseModal = () => {
+    setSelectedImage(null)
+  }
 
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <h1 className="font-display text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-              Our Portfolio
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-              Explore our latest projects and see how we've helped brands transform their visual identity.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Portfolio Grid */}
-      <section className="py-24 bg-white dark:bg-gray-900">
-        <div className="container">
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {categories.map((category) => (
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Image Modal */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: selectedImage ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm ${
+            selectedImage ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+          onClick={handleCloseModal}
+        >
+          {selectedImage && (
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative max-w-7xl max-h-[90vh] mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={selectedImage}
+                alt="Full size image"
+                width={1200}
+                height={800}
+                className="object-contain max-h-[90vh] rounded-lg"
+              />
               <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category.id
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
-                }`}
+                onClick={handleCloseModal}
+                className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors"
               >
-                {category.name}
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
-            ))}
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* Hero Section */}
+        <section className="relative py-20 overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 dark:from-primary-900 dark:via-primary-800 dark:to-primary-700">
+            {/* Animated Balls */}
+            {mounted && (
+              <>
+                {[...Array(20)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute rounded-full bg-white/10 backdrop-blur-sm"
+                    style={{
+                      width: Math.random() * 100 + 50,
+                      height: Math.random() * 100 + 50,
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                    animate={{
+                      x: [0, Math.random() * 100 - 50],
+                      y: [0, Math.random() * 100 - 50],
+                    }}
+                    transition={{
+                      duration: Math.random() * 10 + 10,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                    }}
+                  />
+                ))}
+              </>
+            )}
           </div>
 
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence mode="wait">
-              {filteredProjects.map((project) => (
+          {/* Content */}
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-3xl mx-auto text-center text-white mt-20">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl md:text-5xl font-bold mb-6"
+              >
+                Our Portfolio
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-xl mb-8"
+              >
+                Explore our creative work and see how we've helped businesses achieve their goals through innovative design solutions.
+              </motion.p>
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio Grid */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="group relative overflow-hidden rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-[1.02]"
                 >
-                  <div className="aspect-w-16 aspect-h-9">
-                    <div className="relative h-full w-full">
-                      {/* Overlay border highlight */}
-                      <div className="pointer-events-none absolute inset-0 z-10 rounded-2xl border-2 border-primary-500 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
-                      {project.image.endsWith('.mp4') ? (
-                        <video
-                          src={project.image}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="h-full w-full object-cover transition duration-300 group-hover:grayscale-0 grayscale group-hover:scale-105"
-                        />
-                      ) : (
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className="object-cover transition duration-300 group-hover:grayscale-0 grayscale group-hover:scale-105"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
-                      {project.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                      {project.description}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900/20 dark:text-primary-400"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className="mt-6 inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
-                    >
-                      View Case Study
-                      <svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                  <div className="relative aspect-[4/3]">
+                    {project.image.endsWith('.mp4') ? (
+                      <video
+                        src={project.image}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="text-xs font-medium px-2 py-1 bg-white/20 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                      <p className="text-sm text-gray-200">{project.description}</p>
+                      <Link
+                        href={project.link}
+                        className="mt-4 inline-flex items-center text-sm font-medium text-white hover:text-gray-200"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleImageClick(project.image)
+                        }}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </button>
+                        View Details
+                        <svg
+                          className="ml-2 w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
                 </motion.div>
               ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      </section>
-
-      {/* Project Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 overflow-y-auto"
-          >
-            <div className="flex min-h-screen items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="relative w-full max-w-4xl rounded-2xl bg-white p-6 dark:bg-gray-900"
-                onClick={e => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute right-4 top-4 rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:hover:bg-gray-800"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-                <div className="aspect-w-16 aspect-h-9 mb-6 overflow-hidden rounded-xl">
-                  <div className="relative h-full w-full">
-                    <Image
-                      src={selectedProject.image}
-                      alt={selectedProject.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-                <h2 className="font-display text-2xl font-bold text-gray-900 dark:text-white">
-                  {selectedProject.title}
-                </h2>
-                <p className="mt-4 text-gray-600 dark:text-gray-400">
-                  {selectedProject.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {selectedProject.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900/20 dark:text-primary-400"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
             </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 -z-10 bg-black/50 backdrop-blur-sm"
-              onClick={() => setSelectedProject(null)}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
+            <p className="text-white text-xl mb-8">Let's create something amazing together.</p>
+            <Link 
+              href="/contact" 
+              className="inline-block bg-white text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all"
+            >
+              Get Started Today
+            </Link>
+          </div>
+        </section>
+      </div>
     </MainLayout>
   )
-} 
+}
+
+export default Portfolio 
