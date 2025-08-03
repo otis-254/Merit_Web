@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MainLayout } from '../../components/layout/main-layout'
+import emailjs from '@emailjs/browser'
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -37,10 +38,20 @@ export default function Contact() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Here you would typically send the data to your backend
-      console.log(data)
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await emailjs.send(
+        'service_5eceipe',
+        'template_3i0vuek',
+        {
+          from_name: data.name,
+          from_email: data.email,
+          to_email: 'meritmediapro007@gmail.com',
+          phone: data.phone || 'Not provided',
+          company: data.company || 'Not provided',
+          service: data.service,
+          message: data.message,
+        },
+        '12pmQhGYvWzg9n1Z0'
+      )
       alert('Thank you for your message! We will get back to you soon.')
       reset()
     } catch (error) {

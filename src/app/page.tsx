@@ -383,7 +383,7 @@ const getBotResponse = (message: string) => {
   // Check for collaboration related questions
   if (lowerMessage.includes('collaborate') || lowerMessage.includes('work together') || lowerMessage.includes('involve') || 
       lowerMessage.includes('participate') || lowerMessage.includes('contribute')) {
-    return faqResponses.questions.collaboration
+    return faqResponses.questions.collaboration 
   }
 
   // Check for guarantee related questions
@@ -1386,7 +1386,7 @@ const services = [
     description: "Create stunning print materials that make a lasting impression.",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
       </svg>
     )
   },
@@ -1417,7 +1417,7 @@ const featuredWork: FeaturedWork[] = [
     title: 'Brand Identity Design',
     category: 'Branding',
     type: 'image',
-    media: '/portfolio/brand-identity.jpg',
+    media: '/portfolio/Brand.jpg',
     slug: 'brand-identity',
     description: 'Comprehensive brand identity design including logo, color palette, typography, and brand guidelines.'
   },
@@ -1426,7 +1426,7 @@ const featuredWork: FeaturedWork[] = [
     title: 'UI/UX Design',
     category: 'Digital Design',
     type: 'image',
-    media: '/portfolio/ui-ux.jpg',
+    media: '/portfolio/uiux.png',
     slug: 'ui-ux',
     description: 'User-centered interface design with intuitive navigation and engaging user experience.'
   },
@@ -1434,8 +1434,8 @@ const featuredWork: FeaturedWork[] = [
     id: 'motion',
     title: 'Motion Graphics',
     category: 'Animation',
-    type: 'video',
-    media: '/portfolio/motion.mp4',
+    type: 'image',
+    media: '/portfolio/hero-3.png',
     slug: 'motion',
     description: 'Dynamic motion graphics and animations that bring your brand to life.'
   }
