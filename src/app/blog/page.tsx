@@ -10,87 +10,59 @@ import emailjs from 'emailjs-com';
 const articles = [
   {
     id: 1,
-    title: 'The Future of Brand Identity in the Digital Age',
+    title: '2026 Kenyan Branding Trends: What Local Businesses Need to Know',
     category: 'branding',
-    excerpt: 'Explore how digital transformation is reshaping brand identity and what it means for businesses in 2024.',
-    image: '/blog/article1.jpg',
+    excerpt: 'From street art-inspired palettes to hyper-local storytelling, explore 2026 Kenyan branding trends that help local businesses dominate markets from Mombasa to Kisumu.',
+    image: '/portfolio/Brand.jpg',
     author: {
-      name: 'Sarah Johnson',
-      role: 'Brand Strategist',
-      image: '/team/sarah.jpg',
+      name: 'Caleb Otis',
+      role: 'Creative Director',
+      image: '/team/Team 01.jpeg',
     },
-    date: '2024-05-10',
-    readTime: '5 min read',
+    date: '2026-06-20',
+    readTime: '10 min read',
   },
   {
     id: 2,
-    title: 'Designing for Accessibility: A Comprehensive Guide',
-    category: 'ui-ux',
-    excerpt: 'Learn the essential principles of accessible design and how to create inclusive digital experiences.',
-    image: '/blog/article2.jpg',
+    title: 'Print Design in Kenya: Elevating Local Businesses with High-Quality Materials',
+    category: 'print',
+    excerpt: 'Why print design still dominates Kenyan business in 2026—from premium business cards for CBD professionals to vibrant banners for Gikomba traders—and how to choose the right materials for your Kenyan brand.',
+    image: '/portfolio/Annual.png',
     author: {
-      name: 'Michael Chen',
-      role: 'UX Designer',
-      image: '/team/michael.jpg',
+      name: 'Grace Nafula',
+      role: 'Senior Designer',
+      image: '/team/Team 02.jpeg',
     },
-    date: '2024-05-08',
-    readTime: '8 min read',
+    date: '2026-06-15',
+    readTime: '12 min read',
   },
   {
     id: 3,
-    title: 'Motion Graphics: Bringing Stories to Life',
-    category: 'motion',
-    excerpt: 'Discover how motion graphics can enhance storytelling and create engaging visual narratives.',
-    image: '/blog/article3.jpg',
+    title: 'Designing for Kenyan Diverse Audience: A UI/UX Guide',
+    category: 'ui-ux',
+    excerpt: 'A complete guide to UI/UX design for Kenyan users—covering multilingual support, M-Pesa integration, low-data optimization, accessibility, and more in 2026.',
+    image: '/portfolio/uiux.png',
     author: {
-      name: 'Emma Rodriguez',
-      role: 'Motion Designer',
-      image: '/team/emma.jpg',
+      name: 'James Ochieng',
+      role: 'UX/UI Specialist',
+      image: '/team/Team 04.jpeg',
     },
-    date: '2024-05-05',
-    readTime: '6 min read',
+    date: '2026-06-10',
+    readTime: '15 min read',
   },
   {
     id: 4,
-    title: 'Print Design in a Digital World',
-    category: 'print',
-    excerpt: 'Why print design still matters and how to create effective print materials that complement digital strategies.',
-    image: '/blog/article4.jpg',
-    author: {
-      name: 'David Kim',
-      role: 'Print Designer',
-      image: '/team/david.jpg',
-    },
-    date: '2024-05-03',
-    readTime: '7 min read',
-  },
-  {
-    id: 5,
-    title: 'The Psychology of Color in Branding',
+    title: 'Branding for Kenyan SMEs: Budget-Friendly Tips to Make a Big Impact',
     category: 'branding',
-    excerpt: 'Understanding how color choices impact brand perception and consumer behavior.',
-    image: '/blog/article5.jpg',
+    excerpt: 'Actionable, budget-friendly branding strategies for Kenyan small and medium enterprises (SMEs)—from logo design to social media—tailored for Kenyan markets in 2026.',
+    image: '/portfolio/Brand 02.jpg',
     author: {
-      name: 'Sarah Johnson',
-      role: 'Brand Strategist',
-      image: '/team/sarah.jpg',
+      name: 'Mildred Kerubo',
+      role: 'Project Manager',
+      image: '/team/Team 03.jpeg',
     },
-    date: '2024-05-01',
-    readTime: '4 min read',
-  },
-  {
-    id: 6,
-    title: 'Mobile-First Design: Best Practices',
-    category: 'ui-ux',
-    excerpt: 'Essential tips and strategies for creating effective mobile-first user interfaces.',
-    image: '/blog/article6.jpg',
-    author: {
-      name: 'Michael Chen',
-      role: 'UX Designer',
-      image: '/team/michael.jpg',
-    },
-    date: '2024-04-28',
-    readTime: '9 min read',
+    date: '2026-06-05',
+    readTime: '11 min read',
   },
 ]
 
@@ -98,7 +70,6 @@ const categories = [
   { id: 'all', name: 'All Articles' },
   { id: 'branding', name: 'Branding' },
   { id: 'ui-ux', name: 'UI/UX Design' },
-  { id: 'motion', name: 'Motion Graphics' },
   { id: 'print', name: 'Print Design' },
 ]
 
@@ -133,10 +104,10 @@ export default function Blog() {
             className="text-center"
           >
             <h1 className="font-display text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-              Blog & Insights
+              Blog & Insights for Kenyan Businesses
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-              Explore our latest articles, industry insights, and design trends.
+              Explore our latest articles, industry insights, and design trends tailored for Kenyan businesses of all sizes.
             </p>
           </motion.div>
         </div>
@@ -187,7 +158,7 @@ export default function Blog() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                         <time dateTime={article.date}>
                           {new Date(article.date).toLocaleDateString('en-US', {
                             year: 'numeric',

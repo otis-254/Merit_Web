@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
-import { useTheme } from 'next-themes'
+import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
+import { FaWhatsapp } from 'react-icons/fa'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -16,6 +16,7 @@ const navigation = [
       { name: 'About Us', href: '/about#about-us' },
       { name: 'Vision & Mission', href: '/about#vision-mission' },
       { name: 'Our Team', href: '/about#our-team' },
+      { name: 'Careers', href: '/about#careers' },
     ]
   },
   { 
@@ -30,29 +31,20 @@ const navigation = [
     ]
   },
   { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
 ]
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setHasScrolled(latest > 20);
   });
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
 
   return (
     <nav 
@@ -73,8 +65,8 @@ export function Navigation() {
           </div>
 
           {/* Desktop navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-4">
+          <div className="hidden md:flex flex-1 justify-center">
+            <div className="flex items-center space-x-4">
               {navigation.map((item) => (
                 <div key={item.name} className="relative">
                   {item.dropdown ? (
@@ -130,53 +122,34 @@ export function Navigation() {
                   )}
                 </div>
               ))}
-              <button
-                onClick={toggleTheme}
-                className="rounded-full p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                aria-label="Toggle theme"
-              >
-                {mounted && (
-                  <>
-                    {theme === 'dark' ? (
-                      <SunIcon className="h-5 w-5" />
-                    ) : (
-                      <MoonIcon className="h-5 w-5" />
-                    )}
-                  </>
-                )}
-              </button>
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              onClick={toggleTheme}
-              className="mr-2 rounded-full p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-              aria-label="Toggle theme"
+          {/* WhatsApp icon on the right */}
+          <div className="flex items-center">
+            <a
+              href="https://wa.me/254714531574"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors duration-300"
             >
-              {mounted && (
-                <>
-                  {theme === 'dark' ? (
-                    <SunIcon className="h-5 w-5" />
-                  ) : (
-                    <MoonIcon className="h-5 w-5" />
-                  )}
-                </>
-              )}
-            </button>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-              aria-expanded={isOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? (
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
+              <FaWhatsapp className="w-5 h-5" />
+            </a>
+            {/* Mobile menu button */}
+            <div className="flex md:hidden ml-4">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="rounded-md p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                aria-expanded={isOpen}
+              >
+                <span className="sr-only">Open main menu</span>
+                {isOpen ? (
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

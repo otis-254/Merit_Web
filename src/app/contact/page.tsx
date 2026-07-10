@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MainLayout } from '../../components/layout/main-layout'
-import emailjs from '@emailjs/browser'
+import { FaCheckCircle, FaTimes } from 'react-icons/fa'
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -36,27 +36,32 @@ export default function Contact() {
     resolver: yupResolver(schema) as any,
   })
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const onSubmit = async (data: FormData) => {
     try {
-      await emailjs.send(
-        'service_5eceipe',
-        'template_3i0vuek',
-        {
-          from_name: data.name,
-          from_email: data.email,
-          to_email: 'meritmediapro007@gmail.com',
-          phone: data.phone || 'Not provided',
-          company: data.company || 'Not provided',
-          service: data.service,
-          message: data.message,
+      setSubmitError(null)
+      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        '12pmQhGYvWzg9n1Z0'
-      )
-      alert('Thank you for your message! We will get back to you soon.')
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form')
+      }
+
+      setShowSuccessModal(true)
       reset()
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert('There was an error submitting your message. Please try again.')
+      setSubmitError('There was an error submitting your message. Please try again.')
     }
   }
 
@@ -350,6 +355,11 @@ export default function Contact() {
                         />
                       </svg>
                     </button>
+                    {submitError && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-400 text-center">
+                        {submitError}
+                      </p>
+                    )}
                   </div>
                 </form>
               </div>
@@ -357,6 +367,51 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {showSuccessModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowSuccessModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-8 text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                  <FaCheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Message Sent Successfully!
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Thank you for reaching out to Merit Graphics Solutions.
+              </p>
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
+                  We will revert to you within 2 business hours.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </MainLayout>
   )
 } 

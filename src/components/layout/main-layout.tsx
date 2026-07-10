@@ -5,12 +5,13 @@ import { Navigation } from './navigation'
 import { ToTop } from '../ui/to-top'
 import { LiveChat } from '../ui/live-chat'
 import Link from 'next/link'
+import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok } from 'react-icons/fa'
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      <main className="flex-grow">
+      <main className="flex-grow pt-16">
         {children}
       </main>
       <footer className="bg-gray-50 dark:bg-gray-800">
@@ -131,14 +132,37 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
                 Follow Us
               </h3>
               <div className="mt-4 flex space-x-4">
-                <a href="#" className="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
-                  Instagram
+                <a 
+                  href="https://www.facebook.com/profile.php?id=100084530301305" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                >
+                  <FaFacebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
-                  LinkedIn
+                <a 
+                  href="https://www.instagram.com/meritgraphics_254?igsh=Z2M1dHM1eXdkYTB4&utm_source=qr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                >
+                  <FaInstagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
-                  Twitter
+                <a 
+                  href="https://lite.tiktok.com/t/ZS96L4W68YMC7-HdIcS/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                >
+                  <FaTiktok className="w-5 h-5" />
+                </a>
+                <a 
+                  href="https://www.linkedin.com/company/83062476/admin/dashboard/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                >
+                  <FaLinkedin className="w-5 h-5" />
                 </a>
               </div>
             </div>

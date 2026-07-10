@@ -1,7 +1,19 @@
 {
-  "/page": "app/page.js",
-  "/portfolio/page": "app/portfolio/page.js",
-  "/contact/page": "app/contact/page.js",
+  "/_not-found": "app/_not-found.js",
+  "/blog/[id]/page": "app/blog/[id]/page.js",
   "/about/page": "app/about/page.js",
-  "/services/brand-identity/page": "app/services/brand-identity/page.js"
+  "/blog/page": "app/blog/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/page": "app/page.js",
+  "/services/brand-identity/page": "app/services/brand-identity/page.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/services/motion-graphics/page": "app/services/motion-graphics/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/services/page": "app/services/page.js",
+  "/portfolio/page": "app/portfolio/page.js",
+  "/services/web-app-development/page": "app/services/web-app-development/page.js",
+  "/services/print-design/page": "app/services/print-design/page.js",
+  "/services/ui-ux/page": "app/services/ui-ux/page.js"
 }

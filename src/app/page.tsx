@@ -212,6 +212,7 @@ const designServices = [
   "Packaging Design",
   "Motion Graphics",
   "Social Media Graphics",
+  "Social Media Management",
   "Illustration",
   "Typography",
   "Icon Design",
@@ -236,7 +237,7 @@ const faqResponses = {
     "pricing": "Our pricing varies based on project scope and requirements. Basic logo design starts from $200, while comprehensive brand identity packages begin at $500. Would you like to discuss your specific needs?",
     "timeline": "Project timelines typically range from 2-4 weeks for basic designs to 6-8 weeks for comprehensive brand packages. We'll provide a detailed timeline after understanding your requirements.",
     "process": "Our process includes: 1) Discovery & Research, 2) Strategy Development, 3) Design Creation, and 4) Final Delivery. We maintain clear communication throughout each phase.",
-    "services": "We offer: Brand Identity Design, Logo Design, UI/UX Design, Web Design, Print Design, Packaging Design, Motion Graphics, and Social Media Graphics. What specific service interests you?",
+    "services": "We offer: Brand Identity Design, Logo Design, UI/UX Design, Web Design, Print Design, Packaging Design, Motion Graphics, Social Media Graphics, Social Media Management, and Web/App Development. What specific service interests you?",
     "portfolio": "You can view our portfolio at /portfolio. We've worked with various industries including tech, retail, and healthcare.",
     "payment": "We accept various payment methods including bank transfers, PayPal, and mobile money. A 50% deposit is required to start the project.",
     "revisions": "We offer 3 rounds of revisions for each design phase to ensure your complete satisfaction.",
@@ -395,16 +396,41 @@ const getBotResponse = (message: string) => {
   return faqResponses.default
 }
 
+const homepageFaqs = [
+  {
+    question: "What services does Merit Graphics Solutions offer?",
+    answer: "We provide a full range of creative services including brand identity design, UI/UX design, motion graphics, print design, web and app development, and social media management. Whether you need a new logo, a website, or ongoing content for your social channels, we have you covered."
+  },
+  {
+    question: "How do I get started on a project?",
+    answer: "Getting started is easy — visit our Contact page or reach out via phone or email. We'll schedule a consultation to understand your goals, timeline, and budget, then provide a tailored proposal for your project."
+  },
+  {
+    question: "Where are you located, and do you work with clients outside Kenya?",
+    answer: "We are based in Nairobi, Kenya (Roysambu), but we collaborate with clients locally and internationally. Our team uses email, video calls, and messaging apps to ensure smooth communication across time zones."
+  },
+  {
+    question: "How long does a typical project take?",
+    answer: "Timelines vary by scope. Simple design tasks may take 1–2 weeks, while comprehensive brand identity or web development projects typically run 4–8 weeks. We provide a clear timeline during the initial consultation."
+  },
+  {
+    question: "Can I see examples of your previous work?",
+    answer: "Absolutely. Our Portfolio page showcases a selection of brand identity, UI/UX, motion graphics, print, and web development projects. Browse our work to get a feel for our style and capabilities."
+  },
+  {
+    question: "Do you offer revisions on your designs?",
+    answer: "Yes. We include multiple rounds of revisions at each design phase to make sure the final result matches your vision. Our goal is your complete satisfaction before we deliver the final files."
+  },
+]
+
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const { scrollY } = useScroll()
-  const opacity = useTransform(scrollY, [0, 300], [1, 0])
-  const scale = useTransform(scrollY, [0, 300], [1, 1.2])
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
   const [selectedWork, setSelectedWork] = useState<typeof featuredWork[0] | null>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     // Auto-advance slides
@@ -447,7 +473,7 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section with Photo Carousel */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-16">
         {/* Photo Carousel */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/40 z-10" />
@@ -464,10 +490,6 @@ export default function Home() {
                 src={slides[currentSlide].image}
                 alt={slides[currentSlide].title}
                 className="absolute w-full h-full object-cover"
-                style={{ 
-                  opacity: typeof opacity === 'number' ? opacity : opacity.get(),
-                  scale: typeof scale === 'number' ? scale : scale.get()
-                }}
                 onError={(e) => {
                   console.error('Error loading image:', slides[currentSlide].image);
                   e.currentTarget.src = '/portfolio/001.jpg'; // Fallback image
@@ -998,17 +1020,16 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative group"
+                className="group h-full"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-2xl transform group-hover:scale-105 transition-transform duration-300 backdrop-blur-sm" />
-                <div className="relative p-8 bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-lg backdrop-blur-sm border border-white/30 dark:border-gray-700/30">
+                <div className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 transform group-hover:scale-105 transition-transform duration-300 h-full flex flex-col">
                   <div className="text-primary-500 dark:text-primary-400 transform group-hover:scale-110 transition-transform duration-300">
                     {step.icon}
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
+                  <p className="mt-4 text-gray-600 dark:text-gray-400 flex-grow">
                     {step.description}
                   </p>
                   <div className="mt-6 text-sm font-medium text-primary-500 dark:text-primary-400">
@@ -1047,7 +1068,7 @@ export default function Home() {
               className="flex space-x-8 animate-scroll hover:pause"
               style={{
                 width: "fit-content",
-                animation: "scroll 30s linear infinite",
+                animation: "scroll 60s linear infinite",
               }}
             >
               {/* First set of testimonials */}
@@ -1057,11 +1078,11 @@ export default function Home() {
                   className="flex-shrink-0 w-[400px]"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="relative group">
+                  <div className="relative group h-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
                       <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20">
+                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20 flex-shrink-0">
                           <img
                             src={testimonial.image}
                             alt={testimonial.author}
@@ -1077,7 +1098,7 @@ export default function Home() {
                           </p>
                         </div>
                       </div>
-                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400">
+                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400 flex-grow">
                         "{testimonial.quote}"
                       </blockquote>
                     </div>
@@ -1092,11 +1113,11 @@ export default function Home() {
                   className="flex-shrink-0 w-[400px]"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="relative group">
+                  <div className="relative group h-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
                       <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20">
+                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20 flex-shrink-0">
                           <img
                             src={testimonial.image}
                             alt={testimonial.author}
@@ -1112,7 +1133,7 @@ export default function Home() {
                           </p>
                         </div>
                       </div>
-                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400">
+                      <blockquote className="mt-6 text-gray-600 dark:text-gray-400 flex-grow">
                         "{testimonial.quote}"
                       </blockquote>
                     </div>
@@ -1120,6 +1141,56 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Frequently Asked Questions
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+              Quick answers to common questions about our services and how we work
+            </p>
+          </motion.div>
+
+          <div className="mt-16 max-w-3xl mx-auto space-y-4">
+            {homepageFaqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="border dark:border-gray-700 rounded-lg overflow-hidden"
+              >
+                <button
+                  className="w-full px-6 py-4 text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <div className="flex justify-between items-center gap-4">
+                    <span className="font-semibold text-gray-900 dark:text-white">{faq.question}</span>
+                    <span className="text-primary-600 dark:text-primary-400 flex-shrink-0">
+                      {openFaq === index ? '−' : '+'}
+                    </span>
+                  </div>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700">
+                    <p className="text-gray-600 dark:text-gray-300">{faq.answer}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -1396,6 +1467,15 @@ const services = [
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    )
+  },
+  {
+    name: "Social Media Management",
+    description: "Grow your online presence with strategic content, scheduling, and community engagement.",
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
       </svg>
     )
   }
