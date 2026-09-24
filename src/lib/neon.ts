@@ -52,7 +52,8 @@ export async function insertContactSubmission(data: {
       VALUES (${data.name}, ${data.email}, ${data.phone || null}, ${data.company || null}, ${data.service}, ${data.message})
       RETURNING id, created_at
     `
-    return result[0]
+    const rows = result as unknown as Array<{ id: number; created_at: Date }>
+    return rows[0]
   } catch (error) {
     console.error('Error inserting contact submission:', error)
     throw error
