@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaLinkedin, FaTwitter, FaInstagram, FaTimes } from 'react-icons/fa'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md'
 import { BsArrowRight } from 'react-icons/bs'
 
@@ -611,7 +612,7 @@ export default function About() {
                   onClick={() => setSelectedMember(null)}
                   className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-colors"
                 >
-                  <FaTimes className="w-6 h-6" />
+                  <XMarkIcon className="w-6 h-6" />
                 </button>
                 <div className="absolute bottom-6 left-6 right-6">
                   <h2 className="text-3xl font-bold text-white">{selectedMember.name}</h2>

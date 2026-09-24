@@ -133,7 +133,7 @@ const Portfolio = () => {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
               className="relative max-w-7xl max-h-[90vh] mx-4"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
               <Image
                 src={selectedImage}

@@ -1,4 +1,4 @@
-// File: C:\Users\Hp\Desktop\code\Merit_Web\src\app\page.tsx
+// File: C:\Users\Hp\Documents\Codes\Merit_Website\Merit_Web\src\app\page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

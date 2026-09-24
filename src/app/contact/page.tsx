@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MainLayout } from '../../components/layout/main-layout'
-import { FaCheckCircle, FaTimes } from 'react-icons/fa'
+import { FaCheckCircle } from 'react-icons/fa'
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -384,7 +384,7 @@ export default function Contact() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.3 }}
               className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-8 text-center"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
               <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">

@@ -1,14 +1,21 @@
 import { neon } from '@neondatabase/serverless'
 
-if (!process.env.NEON_DATABASE_URL) {
-  throw new Error('NEON_DATABASE_URL environment variable is not set')
-}
+let _sql: ReturnType<typeof neon> | null = null
 
-export const sql = neon(process.env.NEON_DATABASE_URL)
+export function getSql() {
+  if (_sql) return _sql
+  const connectionString = process.env.NEON_DATABASE_URL
+  if (!connectionString) {
+    throw new Error('NEON_DATABASE_URL environment variable is not set')
+  }
+  _sql = neon(connectionString)
+  return _sql
+}
 
 // Initialize database schema
 export async function initDatabase() {
   try {
+    const sql = getSql()
     await sql`
       CREATE TABLE IF NOT EXISTS contact_submissions (
         id SERIAL PRIMARY KEY,
@@ -39,6 +46,7 @@ export async function insertContactSubmission(data: {
   message: string
 }) {
   try {
+    const sql = getSql()
     const result = await sql`
       INSERT INTO contact_submissions (name, email, phone, company, service, message)
       VALUES (${data.name}, ${data.email}, ${data.phone || null}, ${data.company || null}, ${data.service}, ${data.message})
