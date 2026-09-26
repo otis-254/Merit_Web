@@ -26,6 +26,75 @@ const services = [
   { id: 'print', name: 'Print Design' },
 ]
 
+const quoteServices = [
+  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: '🎨', description: 'Unique logo design with multiple concepts' },
+  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: '✨', description: 'Complete brand guidelines & identity system' },
+  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: '📱', description: 'Monthly social media graphics & content' },
+  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: '📋', description: 'Professional company profile / brochure' },
+  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: '💻', description: 'Responsive modern website design' },
+  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: '🖨️', description: 'Business cards, banners, flyers & more' },
+]
+
+const urgencyLevels = [
+  { id: 'normal', name: 'Normal (7–14 days)', multiplier: 1, description: 'Standard turnaround' },
+  { id: 'rush', name: 'Rush (3–7 days)', multiplier: 1.3, description: '+30% expedited fee' },
+  { id: 'urgent', name: 'Urgent (1–2 days)', multiplier: 1.6, description: '+60% priority fee' },
+]
+
+const businessTypes = [
+  { id: 'startup', name: 'Startup', multiplier: 0.9, description: '10% startup discount' },
+  { id: 'existing', name: 'Existing Business', multiplier: 1, description: 'Standard pricing' },
+]
+
+type QuoteSelection = {
+  services: string[]
+  quantity: number
+  urgency: string
+  businessType: string
+}
+
+function calculateQuote(selection: QuoteSelection) {
+  if (selection.services.length === 0) {
+    return { min: 0, max: 0 }
+  }
+  let totalMin = 0
+  let totalMax = 0
+  for (const sid of selection.services) {
+    const svc = quoteServices.find(s => s.id === sid)
+    if (svc) {
+      totalMin += svc.baseMin
+      totalMax += svc.baseMax
+    }
+  }
+  const qty = selection.quantity
+  let qtyMult = 1
+  if (qty === 1) qtyMult = 1
+  else if (qty === 2) qtyMult = 1.9
+  else if (qty === 3) qtyMult = 2.7
+  else qtyMult = qty * 0.85 + 0.4
+  const urg = urgencyLevels.find(u => u.id === selection.urgency) || urgencyLevels[0]
+  const biz = businessTypes.find(b => b.id === selection.businessType) || businessTypes[1]
+  const min = Math.round(totalMin * qtyMult * urg.multiplier * biz.multiplier / 500) * 500
+  const max = Math.round(totalMax * qtyMult * urg.multiplier * biz.multiplier / 500) * 500
+  return { min, max }
+}
+
+function buildWhatsAppMessage(selection: QuoteSelection, quote: { min: number; max: number }) {
+  const svcs = selection.services
+    .map(id => {
+      const s = quoteServices.find(q => q.id === id)
+      return s ? `– ${s.name}` : ''
+    })
+    .filter(Boolean)
+    .join('%0A')
+  const urg = urgencyLevels.find(u => u.id === selection.urgency)
+  const biz = businessTypes.find(b => b.id === selection.businessType)
+  const range = quote.min && quote.max
+    ? `KSh ${quote.min.toLocaleString()} – ${quote.max.toLocaleString()}`
+    : 'To be confirmed'
+  return `Hello Merit Graphics! I'd like to request a design quote.%0A%0A*Services needed:*%0A${svcs}%0A%0A*Quantity/Scope:* ${selection.quantity}%0A*Urgency:* ${urg?.name || 'Normal'}%0A*Business:* ${biz?.name || 'Existing Business'}%0A%0A*Estimated range:* ${range}%0A%0APlease send me the exact quotation. Thank you!`
+}
+
 export default function Contact() {
   const {
     register,
@@ -38,6 +107,15 @@ export default function Contact() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [quoteSelection, setQuoteSelection] = useState<QuoteSelection>({
+    services: [],
+    quantity: 1,
+    urgency: 'normal',
+    businessType: 'existing',
+  })
+  const quote = calculateQuote(quoteSelection)
+  const whatsappNumber = '254714531574'
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${buildWhatsAppMessage(quoteSelection, quote)}`
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -69,7 +147,15 @@ export default function Contact() {
     <MainLayout>
       {/* Hero Section */}
       <section className="relative py-40 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 dark:from-primary-900 dark:via-primary-800 dark:to-primary-700" />
+        <div
+          className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+          style={{
+            backgroundImage:
+              "url('/brands/Get-in-touch.jpg')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-gray-900/50 to-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/30" />
         <div className="container relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

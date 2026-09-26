@@ -31,7 +31,6 @@ const navigation = [
     ]
   },
   { name: 'Portfolio', href: '/portfolio' },
-  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
 ]
 
@@ -125,8 +124,17 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* WhatsApp icon on the right */}
-          <div className="flex items-center">
+          {/* CTA Buttons on the right */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/#quote-tool"
+              className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-semibold shadow-lg shadow-primary-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/30 hover:-translate-y-0.5 hover:from-primary-600 hover:to-secondary-600"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              Free Instant Quote
+            </Link>
             <a
               href="https://wa.me/254714531574"
               target="_blank"
@@ -136,7 +144,7 @@ export function Navigation() {
               <FaWhatsapp className="w-5 h-5" />
             </a>
             {/* Mobile menu button */}
-            <div className="flex md:hidden ml-4">
+            <div className="flex md:hidden ml-2">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="rounded-md p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -163,7 +171,19 @@ export function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden"
           >
-            <div className="space-y-1 px-2 pb-3 pt-2">
+            <div className="px-2 pb-3 pt-3 mb-2">
+              <Link
+                href="/#quote-tool"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold shadow-lg shadow-primary-500/25"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Free Instant Quote
+              </Link>
+            </div>
+            <div className="space-y-1 px-2 pb-3 pt-1">
               {navigation.map((item) => (
                 <div key={item.name}>
                   {item.dropdown ? (

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence, useAnimation } from 'framer-motion'
 import { MainLayout } from '../components/layout/main-layout'
 import Link from 'next/link'
+import Image from 'next/image'
 
 
 const slides = [
@@ -423,6 +424,75 @@ const homepageFaqs = [
   },
 ]
 
+const quoteServices = [
+  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: '🎨', description: 'Unique logo design with multiple concepts' },
+  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: '✨', description: 'Complete brand guidelines & identity system' },
+  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: '📱', description: 'Monthly social media graphics & content' },
+  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: '📋', description: 'Professional company profile / brochure' },
+  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: '💻', description: 'Responsive modern website design' },
+  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: '🖨️', description: 'Business cards, banners, flyers & more' },
+]
+
+const urgencyLevels = [
+  { id: 'normal', name: 'Normal (7–14 days)', multiplier: 1, description: 'Standard turnaround' },
+  { id: 'rush', name: 'Rush (3–7 days)', multiplier: 1.3, description: '+30% expedited fee' },
+  { id: 'urgent', name: 'Urgent (1–2 days)', multiplier: 1.6, description: '+60% priority fee' },
+]
+
+const businessTypes = [
+  { id: 'startup', name: 'Startup', multiplier: 0.9, description: '10% startup discount' },
+  { id: 'existing', name: 'Existing Business', multiplier: 1, description: 'Standard pricing' },
+]
+
+type QuoteSelection = {
+  services: string[]
+  quantity: number
+  urgency: string
+  businessType: string
+}
+
+function calculateQuote(selection: QuoteSelection) {
+  if (selection.services.length === 0) {
+    return { min: 0, max: 0 }
+  }
+  let totalMin = 0
+  let totalMax = 0
+  for (const sid of selection.services) {
+    const svc = quoteServices.find(s => s.id === sid)
+    if (svc) {
+      totalMin += svc.baseMin
+      totalMax += svc.baseMax
+    }
+  }
+  const qty = selection.quantity
+  let qtyMult = 1
+  if (qty === 1) qtyMult = 1
+  else if (qty === 2) qtyMult = 1.9
+  else if (qty === 3) qtyMult = 2.7
+  else qtyMult = qty * 0.85 + 0.4
+  const urg = urgencyLevels.find(u => u.id === selection.urgency) || urgencyLevels[0]
+  const biz = businessTypes.find(b => b.id === selection.businessType) || businessTypes[1]
+  const min = Math.round(totalMin * qtyMult * urg.multiplier * biz.multiplier / 500) * 500
+  const max = Math.round(totalMax * qtyMult * urg.multiplier * biz.multiplier / 500) * 500
+  return { min, max }
+}
+
+function buildWhatsAppMessage(selection: QuoteSelection, quote: { min: number; max: number }) {
+  const svcs = selection.services
+    .map(id => {
+      const s = quoteServices.find(q => q.id === id)
+      return s ? `– ${s.name}` : ''
+    })
+    .filter(Boolean)
+    .join('%0A')
+  const urg = urgencyLevels.find(u => u.id === selection.urgency)
+  const biz = businessTypes.find(b => b.id === selection.businessType)
+  const range = quote.min && quote.max
+    ? `KSh ${quote.min.toLocaleString()} – ${quote.max.toLocaleString()}`
+    : 'To be confirmed'
+  return `Hello Merit Graphics! I'd like to request a design quote.%0A%0A*Services needed:*%0A${svcs}%0A%0A*Quantity/Scope:* ${selection.quantity}%0A*Urgency:* ${urg?.name || 'Normal'}%0A*Business:* ${biz?.name || 'Existing Business'}%0A%0A*Estimated range:* ${range}%0A%0APlease send me the exact quotation. Thank you!`
+}
+
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -431,6 +501,15 @@ export default function Home() {
   const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
   const [selectedWork, setSelectedWork] = useState<typeof featuredWork[0] | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [quoteSelection, setQuoteSelection] = useState<QuoteSelection>({
+    services: [],
+    quantity: 1,
+    urgency: 'normal',
+    businessType: 'existing',
+  })
+  const quote = calculateQuote(quoteSelection)
+  const whatsappNumber = '254714531574'
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${buildWhatsAppMessage(quoteSelection, quote)}`
 
   useEffect(() => {
     // Auto-advance slides
@@ -685,21 +764,32 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="group relative rounded-2xl bg-gray-50 p-8 dark:bg-gray-800 overflow-hidden"
+                className="group relative rounded-2xl bg-gray-50 dark:bg-gray-800 overflow-hidden"
               >
-                {/* Gradient Border */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500" />
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 z-20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
                 <div className="relative z-10">
-                  <div className="text-primary-600 dark:text-primary-400 transform group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
+                  <div className="relative w-full aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-50/80 via-gray-50/20 to-transparent dark:from-gray-800/80 dark:via-gray-800/20" />
+                    <div className="absolute bottom-4 left-4 text-primary-600 dark:text-primary-400 bg-white/90 dark:bg-gray-900/90 p-2 rounded-lg backdrop-blur-sm transform group-hover:scale-110 transition-transform duration-300">
+                      {service.icon}
+                    </div>
                   </div>
-                  <h3 className="mt-6 font-display text-xl font-semibold text-gray-900 dark:text-white">
-                    {service.name}
-                  </h3>
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    {service.description}
-                  </p>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
+                      {service.name}
+                    </h3>
+                    <p className="mt-4 text-gray-600 dark:text-gray-400">
+                      {service.description}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -1182,7 +1272,7 @@ export default function Home() {
             className="text-center"
           >
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
-              We're Trusted by some of the biggest brands
+              We're Trusted by some of the Biggest Brands
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
               Partnering with leading organizations across Kenya and beyond
@@ -1201,8 +1291,10 @@ export default function Home() {
                 "/brands/islamic-relief-kenya.png",
                 "/brands/career-options-africa.png",
                 "/brands/nairobi-school.png",
+                "/brands/netherland-chembers.png",
                 "/brands/alliance-high-school.png",
-                "/brands/men-only-initiative.png"
+                "/brands/men-only-initiative.png",
+                
               ].map((logo, index) => (
                 <motion.div
                   key={index}
@@ -1272,6 +1364,258 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Free Quote Tool Section */}
+      <section id="quote-tool" className="py-24 bg-white dark:bg-gray-900">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-14"
+          >
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/20 mb-6">
+              <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                🎯 Free Instant Quote
+              </span>
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Get a Free Design Quote
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+              Answer a few quick questions and get an estimated price range instantly. Then request your exact quotation on WhatsApp!
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="relative rounded-3xl bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <div className="absolute top-0 right-0 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+              <div className="absolute bottom-0 left-0 w-72 h-72 bg-secondary-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+
+              <div className="relative z-10 space-y-10">
+                {/* Step 1: Services */}
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-500 text-white text-sm font-bold">1</div>
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
+                        Select what you need
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Choose one or multiple services</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {quoteServices.map((svc) => {
+                      const active = quoteSelection.services.includes(svc.id)
+                      return (
+                        <button
+                          key={svc.id}
+                          onClick={() => {
+                            setQuoteSelection(prev => {
+                              const exists = prev.services.includes(svc.id)
+                              return {
+                                ...prev,
+                                services: exists
+                                  ? prev.services.filter(s => s !== svc.id)
+                                  : [...prev.services, svc.id]
+                              }
+                            })
+                          }}
+                          className={`relative text-left p-5 rounded-2xl border-2 transition-all duration-300 transform hover:-translate-y-0.5 ${
+                            active
+                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10 shadow-lg shadow-primary-500/10'
+                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-300 dark:hover:border-primary-500/40'
+                          }`}
+                        >
+                          {active && (
+                            <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-bold">
+                              ✓
+                            </div>
+                          )}
+                          <div className="text-3xl mb-3">{svc.icon}</div>
+                          <div className={`font-semibold ${active ? 'text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white'}`}>
+                            {svc.name}
+                          </div>
+                          <div className="text-xs mt-1 text-gray-500 dark:text-gray-400 leading-snug">
+                            {svc.description}
+                          </div>
+                          <div className="mt-3 text-xs font-medium text-gray-700 dark:text-gray-300">
+                            From KSh {svc.baseMin.toLocaleString()}
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Step 2: Quantity */}
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-500 text-white text-sm font-bold">2</div>
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
+                        Select quantity / scope
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Rough number of items or deliverables</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {[1, 2, 3, 4, 5, 8, 10].map(q => (
+                      <button
+                        key={q}
+                        onClick={() => setQuoteSelection(prev => ({ ...prev, quantity: q }))}
+                        className={`px-5 py-2.5 rounded-xl font-semibold text-sm border-2 transition-all duration-200 ${
+                          quoteSelection.quantity === q
+                            ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/20'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-primary-300'
+                        }`}
+                      >
+                        {q === 10 ? '10+' : q}
+                      </button>
+                    ))}
+                    <input
+                      type="number"
+                      min={1}
+                      value={quoteSelection.quantity}
+                      onChange={(e) => setQuoteSelection(prev => ({
+                        ...prev,
+                        quantity: Math.max(1, parseInt(e.target.value) || 1)
+                      }))}
+                      className="w-24 px-4 py-2.5 rounded-xl text-sm font-medium border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                      placeholder="Custom"
+                    />
+                  </div>
+                </div>
+
+                {/* Step 3: Urgency */}
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-500 text-white text-sm font-bold">3</div>
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
+                        Select urgency
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">How soon do you need it?</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {urgencyLevels.map(urg => {
+                      const active = quoteSelection.urgency === urg.id
+                      return (
+                        <button
+                          key={urg.id}
+                          onClick={() => setQuoteSelection(prev => ({ ...prev, urgency: urg.id }))}
+                          className={`p-5 rounded-2xl text-left border-2 transition-all duration-300 ${
+                            active
+                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10 shadow-md'
+                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-300'
+                          }`}
+                        >
+                          <div className={`font-semibold ${active ? 'text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white'}`}>
+                            {urg.name}
+                          </div>
+                          <div className="text-xs mt-1 text-gray-500 dark:text-gray-400">{urg.description}</div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Step 4: Business type */}
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-500 text-white text-sm font-bold">4</div>
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
+                        Your business type
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Startups get a 10% discount</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 max-w-lg">
+                    {businessTypes.map(bt => {
+                      const active = quoteSelection.businessType === bt.id
+                      return (
+                        <button
+                          key={bt.id}
+                          onClick={() => setQuoteSelection(prev => ({ ...prev, businessType: bt.id }))}
+                          className={`p-5 rounded-2xl text-left border-2 transition-all duration-300 ${
+                            active
+                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10 shadow-md'
+                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-300'
+                          }`}
+                        >
+                          <div className={`font-semibold ${active ? 'text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white'}`}>
+                            {bt.name}
+                          </div>
+                          <div className="text-xs mt-1 text-gray-500 dark:text-gray-400">{bt.description}</div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Quote result + CTA */}
+                <motion.div
+                  layout
+                  className="rounded-2xl bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500 p-8 md:p-10 text-white shadow-2xl shadow-primary-500/20"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                      <div className="text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                        Estimated Project Cost
+                      </div>
+                      <div className="flex flex-wrap items-baseline gap-3">
+                        {quote.min && quote.max ? (
+                          <>
+                            <div className="text-4xl md:text-5xl font-bold">
+                              KSh {quote.min.toLocaleString()}
+                            </div>
+                            <div className="text-2xl md:text-3xl font-semibold text-white/80">
+                              –
+                            </div>
+                            <div className="text-4xl md:text-5xl font-bold">
+                              {quote.max.toLocaleString()}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-3xl md:text-4xl font-bold">
+                            Select a service to see pricing
+                          </div>
+                        )}
+                      </div>
+                      <p className="mt-3 text-white/80 max-w-lg text-sm">
+                        Want an exact quotation? Send your selections to our team on WhatsApp and we'll send you a detailed quote within minutes.
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-8 py-5 rounded-2xl bg-white text-primary-600 font-bold text-base shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-white/30"
+                      >
+                        <svg viewBox="0 0 32 32" className="w-6 h-6" fill="currentColor">
+                          <path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.043-.53-.043-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.817 0 2.15-.515 2.478-1.318.13-.33.244-.7.244-1.028 0-.3-.185-.53-1.088-.76z" />
+                          <path d="M22.41 23.79c-1.367.437-2.783.654-4.16.654-7.386 0-13.385-6-13.385-13.385 0-2.42.66-4.79 1.918-6.802 1.27-2.032 3.045-3.71 5.168-4.81 2.158-1.126 4.58-1.692 7.03-1.615 7.338.24 13.187 6.327 13.187 13.7 0 2.41-.656 4.757-1.89 6.76-.277.45-.59.9-1.018 1.345l.004.002c.064.192.105.39.105.602 0 .757-.3 1.478-.832 2.01-.726.726-1.692 1.14-2.727 1.14-.428 0-.855-.09-1.252-.266-.218-.1-5.017-2.068-5.017-2.068zm-10.636-20.42C9.66 3.895 7.03 5.107 5.13 7.072 3.785 8.473 2.89 10.22 2.54 12.146c-.364 2.012.1 4.06 1.278 5.825l-.79 2.88 2.974-.776c1.715 1.09 3.715 1.66 5.73 1.66.224 0 .45-.005.67-.016 6.282-.37 11.48-5.722 11.48-12.146 0-2.04-.57-4.018-1.633-5.72a12.52 12.52 0 0 0-4.64-4.252 12.505 12.505 0 0 0-6.12-1.545c-.76 0-1.522.053-2.275.162z" />
+                        </svg>
+                        GET MY QUOTE ON WHATSAPP →
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1508,6 +1852,7 @@ const services = [
   {
     name: "Brand Identity",
     description: "Create a unique and memorable brand identity that resonates with your target audience.",
+    image: "/portfolio/Brand.jpg",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -1517,6 +1862,7 @@ const services = [
   {
     name: "UI/UX Design",
     description: "Design intuitive and engaging user experiences that delight your customers.",
+    image: "/portfolio/uiux.png",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -1526,6 +1872,7 @@ const services = [
   {
     name: "Motion Graphics",
     description: "Bring your brand to life with captivating motion graphics and animations.",
+    image: "/portfolio/hero-3.png",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -1535,6 +1882,7 @@ const services = [
   {
     name: "Print Design",
     description: "Create stunning print materials that make a lasting impression.",
+    image: "/portfolio/Annual.png",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -1544,6 +1892,7 @@ const services = [
   {
     name: "Web/App Development",
     description: "Build modern, responsive websites and applications that drive results.",
+    image: "/portfolio/web-app.jpeg",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -1553,6 +1902,7 @@ const services = [
   {
     name: "Social Media Management",
     description: "Grow your online presence with strategic content, scheduling, and community engagement.",
+    image: "/portfolio/Social-media.jpg",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
