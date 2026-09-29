@@ -64,6 +64,16 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
                     Web/App Development
                   </Link>
                 </li>
+                <li>
+                  <Link href="/case-studies" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                    Case Studies
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                    Blog
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
