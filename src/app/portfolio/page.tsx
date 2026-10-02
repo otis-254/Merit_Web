@@ -35,7 +35,7 @@ const projects = [
     id: 4,
     title: 'Brochure Design',
     description: 'Professional brochure design with compelling layout and typography.',
-    image: '/portfolio/Brochure.png',
+    image: '/portfolio/brochures.jpg',
     tags: ['Print Design', 'Brochure', 'Layout'],
     link: '/services/print-design'
   },
@@ -67,7 +67,7 @@ const projects = [
     id: 8,
     title: 'Luxury Packaging',
     description: 'Premium packaging design for luxury products with attention to detail.',
-    image: '/portfolio/Brand 02.jpg',
+    image: '/portfolio/Pachage.jpg',
     tags: ['Print Design', 'Packaging', 'Luxury'],
     link: '/services/print-design'
   },

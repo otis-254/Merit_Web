@@ -16,7 +16,7 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
       </main>
       <footer className="bg-gray-50 dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
             <div>
               <div className="flex flex-col items-start mb-4">
                 <img
@@ -62,6 +62,28 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
                 <li>
                   <Link href="/services/web-app-development" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
                     Web/App Development
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-semibold text-gray-900 dark:text-white">
+                Resources
+              </h3>
+              <ul className="mt-4 space-y-2">
+                <li>
+                  <Link href="/blog" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/portfolio" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                    Portfolio
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-sm text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                    Free Instant Quote
                   </Link>
                 </li>
               </ul>

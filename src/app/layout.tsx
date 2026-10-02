@@ -10,8 +10,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Merit Graphics Solutions | Creative Design & Development Agency',
-    template: '%s | Merit Graphics Solutions'
+    default: 'Merit Graphics | Creative Design & Development Agency',
+    template: '%s | Merit Graphics'
   },
   description: 'Merit Graphics Solutions is a creative design and development agency specializing in brand identity, UI/UX design, motion graphics, print design, and web development services.',
   keywords: ['design agency', 'brand identity', 'UI/UX design', 'motion graphics', 'print design', 'web development', 'Nairobi', 'Kenya'],

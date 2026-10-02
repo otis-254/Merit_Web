@@ -5,6 +5,9 @@ import { motion, useScroll, useTransform, AnimatePresence, useAnimation } from '
 import { MainLayout } from '../components/layout/main-layout'
 import Link from 'next/link'
 import Image from 'next/image'
+import { testimonials } from '@/data/testimonials'
+import { caseStudies } from '@/data/case-studies'
+import { blogPosts } from '@/data/blog-posts'
 
 
 const slides = [
@@ -43,33 +46,74 @@ const slides = [
   },
 ]
 
-// Add new sections data
-const testimonials = [
-  {
-    id: 1,
-    quote: "Merit Graphics transformed our brand identity completely. Their creative approach and attention to detail exceeded our expectations.",
-    author: "Sarah Odhiambo",
-    role: "Marketing Director",
-    company: "TechVision Inc.",
-    image: "/team/Cleint 003.jpg"
-  },
-  {
-    id: 2,
-    quote: "The team's innovative design solutions helped us increase our conversion rates by 40%. Truly exceptional work!",
-    author: "Michael Nyambane",
-    role: "CEO",
-    company: "GrowthLabs",
-    image: "/team/Cleint 001.jpg"
-  },
-  {
-    id: 3,
-    quote: "Working with Merit Graphics was a game-changer for our business. Their strategic approach to design is unmatched.",
-    author: "Emma Rodriguez",
-    role: "Brand Manager",
-    company: "Creative Solutions",
-    image: "/team/Sarah.jpg"
-  }
-]
+function TestimonialCard({ testimonial }: { testimonial: (typeof testimonials)[0] }) {
+  const StarRating = ({ rating }: { rating: number }) => (
+    <div className="flex items-center gap-1 text-amber-400" aria-label={`${rating} out of 5 stars`}>
+      {[...Array(5)].map((_, index) => (
+        <svg
+          key={index}
+          viewBox="0 0 20 20"
+          fill={index < rating ? 'currentColor' : 'none'}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.539 1.118l-2.8-2.034a1 1 0 0 0-1.176 0l-2.8 2.034c-.784.57-1.839-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.077 8.71c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 0 0 .95-.69l1.07-3.292Z" />
+        </svg>
+      ))}
+    </div>
+  )
+
+  return (
+    <article className="group relative h-full w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_14px_40px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)] dark:border-slate-700 dark:bg-slate-900">
+      <div className="absolute inset-x-5 top-0 h-1 rounded-b-full bg-gradient-to-r from-amber-400 via-primary-500 to-sky-500" />
+
+      <div className="flex h-full flex-col p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-primary-100 ring-offset-2 ring-offset-white dark:ring-primary-900/80 dark:ring-offset-slate-900">
+              <img
+                src={testimonial.image}
+                alt={testimonial.author}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="min-w-0">
+              <h3 className="truncate text-base font-semibold text-slate-900 dark:text-white">
+                {testimonial.author}
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                {testimonial.role}
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-1">
+            <StarRating rating={testimonial.rating} />
+          </div>
+        </div>
+
+        <div className="mt-4 inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+          {testimonial.company}
+        </div>
+
+        <blockquote className="mt-5 flex-1 text-base leading-7 text-slate-700 dark:text-slate-200">
+          &ldquo;{testimonial.quote}&rdquo;
+        </blockquote>
+
+        <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4 dark:border-slate-700">
+          <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+            Verified Client
+          </span>
+          <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
+            {testimonial.rating}/5 experience
+          </span>
+        </div>
+      </div>
+    </article>
+  )
+}
 
 const processSteps = [
   {
@@ -499,7 +543,6 @@ export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
-  const [selectedWork, setSelectedWork] = useState<typeof featuredWork[0] | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [quoteSelection, setQuoteSelection] = useState<QuoteSelection>({
     services: [],
@@ -658,13 +701,12 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4 max-w-3xl mx-auto"
+                className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
               >
                 {[
                   { label: 'Projects Completed', value: '200+' },
                   { label: 'Happy Clients', value: '35+' },
                   { label: 'Years Experience', value: '10+' },
-                  { label: 'Awards Won', value: '25+' },
                 ].map((stat, index) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-2xl font-bold text-primary-400">{stat.value}</div>
@@ -991,9 +1033,9 @@ export default function Home() {
           </motion.div>
 
           <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredWork.map((work, index) => (
+            {caseStudies.slice(0, 5).map((work, index) => (
               <motion.div
-                key={work.id}
+                key={work.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -1001,54 +1043,41 @@ export default function Home() {
                 whileHover={{ y: -5 }}
                 className="group relative overflow-hidden rounded-2xl bg-gray-900"
               >
-                <div className="aspect-w-16 aspect-h-9">
-                  {work.type === 'video' ? (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    >
-                      <source src={work.media} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <img
-                      src={work.media}
-                      alt={work.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  )}
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="absolute bottom-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-2xl font-semibold text-white">
-                      {work.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-200">
-                      {work.category}
-                    </p>
-                    <button
-                      onClick={() => setSelectedWork(work)}
-                      className="mt-4 inline-flex items-center text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors duration-300"
-                    >
-                      View Case Study
-                      <svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                <Link href={`/case-studies/${work.slug}`} className="block">
+                  <div className="aspect-w-16 aspect-h-9">
+                    {work.type === 'video' ? (
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </button>
+                        <source src={work.media} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img
+                        src={work.media}
+                        alt={work.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    )}
                   </div>
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="absolute bottom-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-2xl font-semibold text-white">{work.title}</h3>
+                      <p className="mt-2 text-sm text-gray-200">
+                        {work.client} · {work.category}
+                      </p>
+                      <span className="mt-4 inline-flex items-center text-sm font-medium text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
+                        View Case Study
+                        <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -1133,136 +1162,100 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-white dark:bg-gray-900 overflow-hidden">
+      <section className="overflow-hidden bg-slate-50 py-24 dark:bg-slate-950">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center"
+            className="mx-auto max-w-3xl text-center"
           >
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary-700 dark:border-primary-900/60 dark:bg-primary-900/20 dark:text-primary-300">
+              Client Feedback
+            </span>
+            <h2 className="mt-5 font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white md:text-5xl">
               Client Success Stories
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-              Hear what our clients have to say about their experience
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+              Trusted by founders, schools, and mission-driven organisations that need thoughtful design and dependable delivery.
             </p>
           </motion.div>
 
-          <div className="mt-20 relative">
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
-            
-            <div 
-              className="flex space-x-8 animate-scroll hover:pause"
-              style={{
-                width: "fit-content",
-                animation: "scroll 60s linear infinite",
-              }}
-            >
-              {/* First set of testimonials */}
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={`testimonial-1-${index}`}
-                  className="flex-shrink-0 w-[400px]"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="relative group h-full">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
-                      <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20 flex-shrink-0">
-                          <img
-                            src={testimonial.image}
-                            alt={testimonial.author}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {testimonial.author}
-                          </h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {testimonial.role} at {testimonial.company}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center">
-                        <div className="flex space-x-1">
-                          {[...Array(4)].map((_, i) => (
-                            <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                          <svg className="w-5 h-5 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        </div>
-                        <span className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">4.0/5</span>
-                      </div>
-                      <blockquote className="mt-4 text-gray-600 dark:text-gray-400 flex-grow">
-                        "{testimonial.quote}"
-                      </blockquote>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-              
-              {/* Duplicate set for seamless loop */}
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={`testimonial-2-${index}`}
-                  className="flex-shrink-0 w-[400px]"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="relative group h-full">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl transform group-hover:scale-105 transition-transform duration-300" />
-                    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
-                      <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-full ring-2 ring-primary-500/20 flex-shrink-0">
-                          <img
-                            src={testimonial.image}
-                            alt={testimonial.author}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {testimonial.author}
-                          </h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {testimonial.role} at {testimonial.company}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center">
-                        <div className="flex space-x-1">
-                          {[...Array(4)].map((_, i) => (
-                            <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                          <svg className="w-5 h-5 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        </div>
-                        <span className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">4.0/5</span>
-                      </div>
-                      <blockquote className="mt-4 text-gray-600 dark:text-gray-400 flex-grow">
-                        "{testimonial.quote}"
-                      </blockquote>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <motion.div
+                key={testimonial.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: Number(testimonial.id) * 0.06 }}
+                className="h-full"
+              >
+                <TestimonialCard testimonial={testimonial} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="py-24 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+          >
+            <div className="text-center md:text-left max-w-2xl">
+              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+                From the Blog
+              </h2>
+              <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+                Pricing guides and branding tips for Kenyan businesses—no fluff, just what you need to decide.
+              </p>
             </div>
+            <Link
+              href="/blog"
+              className="text-center md:text-right text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline shrink-0"
+            >
+              View all articles
+            </Link>
+          </motion.div>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            {blogPosts.slice(0, 4).map((post, index) => (
+              <motion.article
+                key={post.slug}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="flex gap-5 rounded-2xl bg-white dark:bg-gray-900 p-5 shadow-sm border border-gray-100 dark:border-gray-700"
+              >
+                <Link href={`/blog/${post.slug}`} className="shrink-0 w-28 h-28 md:w-32 md:h-32 overflow-hidden rounded-xl">
+                  <img src={post.coverImage} alt="" className="h-full w-full object-cover" />
+                </Link>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-primary-600 dark:text-primary-400">{post.category}</p>
+                  <h3 className="mt-1 font-semibold text-gray-900 dark:text-white line-clamp-2">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{post.description}</p>
+                  <p className="mt-2 text-xs text-gray-500">{post.readTimeMinutes} min read</p>
+                </div>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Trusted Brands Section */}
-      <section className="py-24 bg-gray-50 dark:bg-gray-800">
+      <section className="py-24 bg-white dark:bg-gray-900">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1768,82 +1761,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Featured Work Modal */}
-      <AnimatePresence>
-        {selectedWork && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-            onClick={() => setSelectedWork(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-2xl"
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedWork(null)}
-                className="absolute top-4 right-4 p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors z-10"
-              >
-                <svg
-                  className="w-6 h-6 text-gray-600 dark:text-gray-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              {/* Modal Content */}
-              <div className="p-6">
-                <div className="aspect-w-16 aspect-h-9 mb-6">
-                  {selectedWork.type === 'video' ? (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover rounded-lg"
-                    >
-                      <source src={selectedWork.media} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <img
-                      src={selectedWork.media}
-                      alt={selectedWork.title}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  )}
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                  {selectedWork.title}
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-                  {selectedWork.category}
-                </p>
-                <div className="prose dark:prose-invert max-w-none">
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {selectedWork.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </MainLayout>
   )
 }
@@ -1910,43 +1827,3 @@ const services = [
     )
   }
 ]
-
-type FeaturedWork = {
-  id: string
-  title: string
-  category: string
-  type: 'image' | 'video'
-  media: string
-  slug: string
-  description: string
-}
-
-const featuredWork: FeaturedWork[] = [
-  {
-    id: 'brand-identity',
-    title: 'Brand Identity Design',
-    category: 'Branding',
-    type: 'image',
-    media: '/portfolio/Brand.jpg',
-    slug: 'brand-identity',
-    description: 'Comprehensive brand identity design including logo, color palette, typography, and brand guidelines.'
-  },
-  {
-    id: 'ui-ux',
-    title: 'UI/UX Design',
-    category: 'Digital Design',
-    type: 'image',
-    media: '/portfolio/uiux.png',
-    slug: 'ui-ux',
-    description: 'User-centered interface design with intuitive navigation and engaging user experience.'
-  },
-  {
-    id: 'motion',
-    title: 'Motion Graphics',
-    category: 'Animation',
-    type: 'image',
-    media: '/portfolio/hero-3.png',
-    slug: 'motion',
-    description: 'Dynamic motion graphics and animations that bring your brand to life.'
-  }
-] 
