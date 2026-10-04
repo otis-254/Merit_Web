@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -9,6 +7,10 @@ import { caseStudies, getCaseStudyBySlug } from '@/data/case-studies'
 
 type PageProps = {
   params: { slug: string }
+}
+
+export function generateStaticParams() {
+  return caseStudies.map(({ slug }) => ({ slug }))
 }
 
 export default function CaseStudyPage({ params }: PageProps) {
