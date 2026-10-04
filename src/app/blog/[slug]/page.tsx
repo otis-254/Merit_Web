@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -9,6 +7,10 @@ import { blogPosts, getBlogPostBySlug } from '@/data/blog-posts'
 
 type PageProps = {
   params: { slug: string }
+}
+
+export function generateStaticParams() {
+  return blogPosts.map(({ slug }) => ({ slug }))
 }
 
 export default function BlogPostPage({ params }: PageProps) {

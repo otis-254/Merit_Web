@@ -20,13 +20,13 @@ const team = [
   {
     name: 'Michael Chen',
     role: 'Lead Designer',
-    image: '/team/michael.jpg',
+    image: '/team/Team 02.jpeg',
     bio: 'Michael brings a unique perspective to every project, combining traditional design principles with modern techniques.',
   },
   {
     name: 'Emily Rodriguez',
     role: 'UX/UI Specialist',
-    image: '/team/emily.jpg',
+    image: '/team/Team 03.jpeg',
     bio: 'Emily specializes in creating intuitive and engaging user experiences that delight and inspire.',
   },
 ]

@@ -67,7 +67,7 @@ const projects = [
     id: 8,
     title: 'Luxury Packaging',
     description: 'Premium packaging design for luxury products with attention to detail.',
-    image: '/portfolio/Pachage.jpg',
+    image: '/portfolio/pachage.jpg',
     tags: ['Print Design', 'Packaging', 'Luxury'],
     link: '/services/print-design'
   },
