@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
+import { AnimatedCaseStudySection } from '@/components/case-studies/AnimatedCaseStudySection'
 import { caseStudies, getCaseStudyBySlug } from '@/data/case-studies'
 
 type PageProps = {
@@ -45,12 +45,7 @@ export default function CaseStudyPage({ params }: PageProps) {
           <div className="max-w-3xl">
             <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">{study.summary}</p>
 
-            <motion.section
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-12 space-y-10"
-            >
+            <AnimatedCaseStudySection>
               <div>
                 <h2 className="text-sm font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400">
                   The problem
@@ -69,7 +64,7 @@ export default function CaseStudyPage({ params }: PageProps) {
                 </h2>
                 <p className="mt-3 text-gray-600 dark:text-gray-400 leading-relaxed">{study.result}</p>
               </div>
-            </motion.section>
+            </AnimatedCaseStudySection>
 
             <div className="mt-14 flex flex-wrap gap-4">
               <Link

@@ -37,7 +37,7 @@ export const caseStudies: CaseStudy[] = [
     category: 'Brand Identity & Professional Pitch',
     client: 'Zigo Trace',
     type: 'image',
-    media: '/portfolio/Zigo-trust.jpeg',
+    media: '/portfolio/zigo-trust.jpeg',
     summary:
       'Logo refinement, company profile, and presentation templates for regional partnership meetings.',
     problem:
