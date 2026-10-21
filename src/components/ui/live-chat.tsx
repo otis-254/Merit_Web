@@ -29,7 +29,7 @@ function AiOrb({ mood, compact = false }: { mood: ChatMood; compact?: boolean })
   return (
     <AIOrbFace
       aria-label={`Merit AI is ${copy.label}`}
-      className={compact ? 'drop-shadow-[0_0_18px_rgba(249,115,22,0.52)]' : 'drop-shadow-[0_0_12px_rgba(249,115,22,0.42)]'}
+      className={compact ? 'merit-ai-orb merit-ai-orb--compact' : 'merit-ai-orb'}
       colors={{ body: '#f97316', bodyEdge: '#ffedd5', feature: '#431407' }}
       gaze={!compact}
       size={compact ? 58 : 46}
@@ -191,7 +191,7 @@ export const LiveChat = () => {
       <motion.button
         aria-label={isChatOpen ? 'Close AI assistant' : 'Open AI assistant'}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed bottom-5 right-5 z-50 grid h-16 w-16 place-items-center rounded-full border border-white/30 bg-slate-950/90 shadow-[0_18px_40px_rgba(15,23,42,0.32)] backdrop-blur transition-shadow hover:shadow-[0_22px_46px_rgba(234,88,12,0.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:border-white/20"
+        className="fixed bottom-5 right-5 z-50 grid h-16 w-16 place-items-center rounded-full border-0 bg-transparent shadow-none transition-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
         initial={{ opacity: 0, scale: 0.8 }}
         onClick={toggleChat}
         type="button"

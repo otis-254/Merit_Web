@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ArrowRight, X } from 'lucide-react'
 import { caseStudies } from '../../data/case-studies'
+import { HeroDoodles } from '@/components/ui/hero-doodles'
 
 const projects = [
   {
@@ -149,39 +150,14 @@ const Portfolio = () => {
         <section className="relative py-20 overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 dark:from-primary-900 dark:via-primary-800 dark:to-primary-700">
-            {/* Animated Balls */}
-            {mounted && (
-              <>
-                {[...Array(20)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute rounded-full bg-white/10 backdrop-blur-sm"
-                    style={{
-                      width: Math.random() * 100 + 50,
-                      height: Math.random() * 100 + 50,
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      x: [0, Math.random() * 100 - 50],
-                      y: [0, Math.random() * 100 - 50],
-                    }}
-                    transition={{
-                      duration: Math.random() * 10 + 10,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut",
-                    }}
-                  />
-                ))}
-              </>
-            )}
+            <HeroDoodles tone="inverse" />
           </div>
 
           {/* Content */}
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center text-white mt-20">
               <motion.h1 
+                data-aos="fade-up"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -190,6 +166,8 @@ const Portfolio = () => {
                 Our Portfolio
               </motion.h1>
               <motion.p 
+                data-aos="fade-up"
+                data-aos-delay="90"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}

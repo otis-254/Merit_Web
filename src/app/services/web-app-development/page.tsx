@@ -3,6 +3,7 @@
 import React from 'react'
 import { MainLayout } from '@/components/layout/main-layout'
 import { ArrowRight, Code, Smartphone, Zap, Shield, Users, Clock, CheckCircle } from 'lucide-react'
+import { HeroDoodles } from '@/components/ui/hero-doodles'
 
 const benefits = [
   {
@@ -98,12 +99,13 @@ export default function WebAppDevelopment() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
-        <div className="container">
+      <section className="relative overflow-hidden py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
+        <HeroDoodles tone="inverse" />
+        <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white mt-20">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Web & App Development</h1>
-            <p className="text-xl mb-8">Transform your ideas into powerful digital solutions with our expert development services.</p>
-            <a href="#contact" className="btn-inverse">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">Web & App Development</h1>
+            <p className="text-xl mb-8" data-aos="fade-up" data-aos-delay="90">Transform your ideas into powerful digital solutions with our expert development services.</p>
+            <a href="#contact" className="btn-inverse" data-aos="fade-up" data-aos-delay="160">
               Start Your Project
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>

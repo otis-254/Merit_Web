@@ -4,6 +4,8 @@ import './globals.css'
 import { PwaRegister } from '@/components/PwaRegister'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { CursorSpotlight } from '@/components/CursorSpotlight'
+import { AosProvider } from '@/components/AosProvider'
+import 'aos/dist/aos.css'
 
 export const metadata: Metadata = {
   title: {
@@ -104,9 +106,11 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased">
         <ThemeProvider>
-          <PwaRegister />
-          <CursorSpotlight />
-          {children}
+          <AosProvider>
+            <PwaRegister />
+            <CursorSpotlight />
+            {children}
+          </AosProvider>
         </ThemeProvider>
       </body>
     </html>

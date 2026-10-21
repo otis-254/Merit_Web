@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
+import { HeroDoodles } from '@/components/ui/hero-doodles'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CheckIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
@@ -81,14 +82,17 @@ export default function MotionGraphics() {
   return (
     <MainLayout>
       {/* Hero Section with Gradient */}
-      <section className="relative py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
+      <section className="relative overflow-hidden py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
+        <HeroDoodles tone="inverse" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white mt-20">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Motion Graphics Design</h1>
-            <p className="text-xl mb-8">Bring your brand to life with captivating motion graphics and animations that engage and inspire.</p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">Motion Graphics Design</h1>
+            <p className="text-xl mb-8" data-aos="fade-up" data-aos-delay="90">Bring your brand to life with captivating motion graphics and animations that engage and inspire.</p>
             <Link 
               href="/contact" 
+              data-aos="fade-up"
+              data-aos-delay="160"
               className="btn-inverse"
             >
               Start Your Animation Project

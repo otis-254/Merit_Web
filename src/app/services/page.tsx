@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import Link from 'next/link'
+import { HeroDoodles } from '@/components/ui/hero-doodles'
 
 const services = [
   {
@@ -101,6 +102,7 @@ export default function Services() {
       {/* Hero Section */}
       <section className="relative py-32 bg-gradient-to-br from-primary-50 via-white to-secondary-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        <HeroDoodles />
         {/* Decorative SVG or Icon */}
         <div className="absolute right-0 top-0 w-1/2 h-full pointer-events-none select-none hidden lg:block">
           <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-30">
@@ -160,6 +162,7 @@ export default function Services() {
             </span>
           </div>
           <motion.h1
+            data-aos="fade-up"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.7 }}
@@ -169,6 +172,8 @@ export default function Services() {
             Our Services
           </motion.h1>
           <motion.p
+            data-aos="fade-up"
+            data-aos-delay="90"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.7 }}

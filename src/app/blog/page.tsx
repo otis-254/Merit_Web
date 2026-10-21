@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import { blogPosts } from '@/data/blog-posts'
+import { HeroDoodles } from '@/components/ui/hero-doodles'
 
 export default function BlogPage() {
   const sorted = [...blogPosts].sort(
@@ -14,10 +15,11 @@ export default function BlogPage() {
   return (
     <MainLayout>
       <div className="bg-white dark:bg-gray-900">
-        <section className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 py-16">
-          <div className="container text-center max-w-3xl mx-auto">
-            <h1 className="ds-section-title">Blog</h1>
-            <p className="ds-section-intro mt-4">
+        <section className="relative overflow-hidden border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 py-16">
+          <HeroDoodles />
+          <div className="container relative z-10 text-center max-w-3xl mx-auto">
+            <h1 className="ds-section-title" data-aos="fade-up">Blog</h1>
+            <p className="ds-section-intro mt-4" data-aos="fade-up" data-aos-delay="90">
               Practical guides on branding, websites, and design pricing for businesses in Kenya.
             </p>
           </div>
