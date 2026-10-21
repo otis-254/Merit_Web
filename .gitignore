@@ -10,6 +10,10 @@
 *.swo
 .superpowers/
 
+# Agent planning artifacts and automated checks kept locally
+/docs/superpowers/
+/tests/
+
 # Standalone projects managed in their own repositories
 /merit-admin/
 /merit-contracts/
