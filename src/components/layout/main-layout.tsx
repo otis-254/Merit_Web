@@ -5,7 +5,7 @@ import { Navigation } from './navigation'
 import { ToTop } from '../ui/to-top'
 import { LiveChat } from '../ui/live-chat'
 import Link from 'next/link'
-import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok } from 'react-icons/fa'
+import { FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa'
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -15,7 +15,7 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </main>
       <footer className="bg-gray-50 dark:bg-gray-800">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="container py-12">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
             <div>
               <div className="flex flex-col items-start mb-4">
@@ -156,35 +156,30 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
               <div className="mt-4 flex space-x-4">
                 <a 
                   href="https://www.facebook.com/profile.php?id=100084530301305" 
+                  aria-label="Merit Graphics on Facebook"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                  className="ds-icon-button"
                 >
                   <FaFacebook className="w-5 h-5" />
                 </a>
                 <a 
                   href="https://www.instagram.com/meritgraphics_254?igsh=Z2M1dHM1eXdkYTB4&utm_source=qr" 
+                  aria-label="Merit Graphics on Instagram"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                  className="ds-icon-button"
                 >
                   <FaInstagram className="w-5 h-5" />
                 </a>
                 <a 
                   href="https://lite.tiktok.com/t/ZS96L4W68YMC7-HdIcS/" 
+                  aria-label="Merit Graphics on TikTok"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                  className="ds-icon-button"
                 >
                   <FaTiktok className="w-5 h-5" />
-                </a>
-                <a 
-                  href="https://www.linkedin.com/company/83062476/admin/dashboard/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-500 hover:text-white transition-colors duration-300"
-                >
-                  <FaLinkedin className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -198,4 +193,4 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
       <LiveChat />
     </div>
   )
-} 
+}

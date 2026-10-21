@@ -6,15 +6,18 @@ import { AnimatedCaseStudySection } from '@/components/case-studies/AnimatedCase
 import { caseStudies, getCaseStudyBySlug } from '@/data/case-studies'
 
 type PageProps = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
+
+export const dynamicParams = false
 
 export function generateStaticParams() {
   return caseStudies.map(({ slug }) => ({ slug }))
 }
 
-export default function CaseStudyPage({ params }: PageProps) {
-  const study = getCaseStudyBySlug(params.slug)
+export default async function CaseStudyPage({ params }: PageProps) {
+  const { slug } = await params
+  const study = getCaseStudyBySlug(slug)
 
   if (!study) {
     notFound()

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { CheckCircle, PawPrint } from 'lucide-react'
 
 // Maasai-inspired color pairs
 const COLOR_PAIRS = [
@@ -138,14 +139,14 @@ export default function KenyanGame() {
                 >
                   {/* Front of card (pattern) */}
                   <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800 rounded-lg flex items-center justify-center border-2 border-primary-200 dark:border-gray-600">
-                    <div className="text-4xl">🦁</div>
+                    <PawPrint className="text-4xl text-primary-600" aria-hidden="true" />
                   </div>
                   {/* Back of card (color) */}
                   <div
                     className="absolute w-full h-full backface-hidden rounded-lg rotate-y-180 flex items-center justify-center border-2"
                     style={{ backgroundColor: card.color, borderColor: card.color }}
                   >
-                    {card.isMatched && <div className="text-3xl">✅</div>}
+                    {card.isMatched && <CheckCircle className="text-3xl text-white" aria-label="Matched" />}
                   </div>
                 </div>
               </div>

@@ -3,8 +3,21 @@
 /.pnp
 .pnp.js
 
+# local development tooling
+.vscode/
+.idea/
+*.swp
+*.swo
+.superpowers/
+
+# Standalone projects managed in their own repositories
+/merit-admin/
+/merit-contracts/
+
 # testing
 /coverage
+/playwright-report/
+/test-results/
 
 # next.js
 /.next/
@@ -16,6 +29,8 @@
 # misc
 .DS_Store
 *.pem
+*.key
+*.crt
 
 # debug
 npm-debug.log*
@@ -24,9 +39,18 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+.env.*
 
 # vercel
 .vercel
+
+# reports and local caches
+*.log
+*.pid
+.eslintcache
+.turbo/
+.cache/
 
 # typescript
 *.tsbuildinfo
@@ -39,4 +63,4 @@ public/portfolio/*.avi
 public/portfolio/*.wmv
 public/portfolio/*.flv
 public/portfolio/*.webm
-public/portfolio/*.mkv 
+public/portfolio/*.mkv

@@ -98,12 +98,12 @@ export default function WebAppDevelopment() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-blue-600 to-indigo-700">
+      <section className="relative py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center text-white mt-20">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Web & App Development</h1>
             <p className="text-xl mb-8">Transform your ideas into powerful digital solutions with our expert development services.</p>
-            <a href="#contact" className="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <a href="#contact" className="btn-inverse">
               Start Your Project
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
@@ -118,7 +118,7 @@ export default function WebAppDevelopment() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
               <div key={index} className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-blue-600 dark:text-blue-400 mb-4">{benefit.icon}</div>
+                <div className="text-primary-700 dark:text-primary-400 mb-4">{benefit.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
                 <p className="text-gray-600 dark:text-gray-400">{benefit.description}</p>
               </div>
@@ -150,7 +150,7 @@ export default function WebAppDevelopment() {
             <div className="space-y-8">
               {process.map((step, index) => (
                 <div key={index} className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-700 rounded-full flex items-center justify-center text-white font-bold">
                     {index + 1}
                   </div>
                   <div className="ml-6">
@@ -190,12 +190,12 @@ export default function WebAppDevelopment() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-primary-700">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-6">Ready to Build Your Digital Solution?</h2>
             <p className="text-xl mb-8">Let's discuss your project and create something amazing together.</p>
-            <a href="#contact" className="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <a href="#contact" className="btn-inverse">
               Get Started
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
@@ -204,4 +204,4 @@ export default function WebAppDevelopment() {
       </section>
     </MainLayout>
   )
-} 
+}

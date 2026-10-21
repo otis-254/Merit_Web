@@ -8,6 +8,8 @@ import Image from 'next/image'
 import { testimonials } from '@/data/testimonials'
 import { caseStudies } from '@/data/case-studies'
 import { blogPosts } from '@/data/blog-posts'
+import { ProgressQuoteForm } from '@/components/ProgressQuoteForm'
+import { Check, FileText, Laptop, Palette, Paintbrush, Printer, Smartphone, Target } from 'lucide-react'
 
 
 const slides = [
@@ -469,12 +471,12 @@ const homepageFaqs = [
 ]
 
 const quoteServices = [
-  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: '🎨', description: 'Unique logo design with multiple concepts' },
-  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: '✨', description: 'Complete brand guidelines & identity system' },
-  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: '📱', description: 'Monthly social media graphics & content' },
-  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: '📋', description: 'Professional company profile / brochure' },
-  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: '💻', description: 'Responsive modern website design' },
-  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: '🖨️', description: 'Business cards, banners, flyers & more' },
+  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: Palette, description: 'Unique logo design with multiple concepts' },
+  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: Paintbrush, description: 'Complete brand guidelines & identity system' },
+  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: Smartphone, description: 'Monthly social media graphics & content' },
+  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: FileText, description: 'Professional company profile / brochure' },
+  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: Laptop, description: 'Responsive modern website design' },
+  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: Printer, description: 'Business cards, banners, flyers & more' },
 ]
 
 const urgencyLevels = [
@@ -540,9 +542,6 @@ function buildWhatsAppMessage(selection: QuoteSelection, quote: { min: number; m
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
-  const [isChatOpen, setIsChatOpen] = useState(false)
-  const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'bot' }[]>([])
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [quoteSelection, setQuoteSelection] = useState<QuoteSelection>({
     services: [],
@@ -574,22 +573,6 @@ export default function Home() {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (message.trim()) {
-      setMessages([...messages, { text: message, sender: 'user' }])
-      setMessage('')
-      // Add bot response
-      setTimeout(() => {
-        const botResponse = getBotResponse(message)
-        setMessages(prev => [...prev, { 
-          text: botResponse, 
-          sender: 'bot' 
-        }])
-      }, 1000)
-    }
   }
 
   return (
@@ -683,7 +666,7 @@ export default function Home() {
               >
                 <Link
                   href={slides[currentSlide].cta.primary.href}
-                  className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-primary-500/25"
+                  className="btn-primary group relative px-8 py-4 text-base"
                 >
                   <span className="relative z-10">{slides[currentSlide].cta.primary.text}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -779,7 +762,7 @@ export default function Home() {
       </section>
 
       {/* Services Section with Parallax */}
-      <section className="relative py-24 bg-white dark:bg-gray-900 overflow-hidden">
+      <section className="ds-section relative overflow-hidden bg-white dark:bg-gray-900">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="container relative z-10">
           <motion.div
@@ -789,10 +772,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <h2 className="ds-section-title">
               Our Services
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+            <p className="ds-section-intro mx-auto mt-6 max-w-2xl">
               Comprehensive creative solutions to help your brand stand out in the digital landscape.
             </p>
           </motion.div>
@@ -806,7 +789,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="group relative rounded-2xl bg-gray-50 dark:bg-gray-800 overflow-hidden"
+                className="ds-card ds-card-hover group relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 z-20" />
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
@@ -1091,7 +1074,7 @@ export default function Home() {
           >
             <Link
               href="/portfolio"
-              className="inline-flex items-center px-8 py-3 text-base font-semibold text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-colors duration-300"
+              className="btn-primary px-8 text-base"
             >
               <span>View All Projects</span>
               <svg
@@ -1363,6 +1346,10 @@ export default function Home() {
       {/* Free Quote Tool Section */}
       <section id="quote-tool" className="py-24 bg-white dark:bg-gray-900">
         <div className="container">
+          <ProgressQuoteForm />
+          {/* Legacy quote builder disabled while the progress-form prototype is reviewed. */}
+          {false && (
+          <>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1372,7 +1359,8 @@ export default function Home() {
           >
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/20 mb-6">
               <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
-                🎯 Free Instant Quote
+                <Target className="mr-2" aria-hidden="true" />
+                Free Instant Quote
               </span>
             </div>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -1431,10 +1419,12 @@ export default function Home() {
                         >
                           {active && (
                             <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-bold">
-                              ✓
+                              <Check aria-hidden="true" />
                             </div>
                           )}
-                          <div className="text-3xl mb-3">{svc.icon}</div>
+                          <div className="mb-3 text-3xl text-primary-500" aria-hidden="true">
+                            <svc.icon />
+                          </div>
                           <div className={`font-semibold ${active ? 'text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white'}`}>
                             {svc.name}
                           </div>
@@ -1609,6 +1599,8 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+          </>
+          )}
         </div>
       </section>
 
@@ -1633,7 +1625,7 @@ export default function Home() {
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                className="btn-inverse px-8 py-4 text-base"
               >
                 Start Your Project
               </Link>
@@ -1647,100 +1639,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      {/* Live Chat Button */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsChatOpen(!isChatOpen)}
-        className="fixed bottom-6 right-6 z-50 p-4 bg-primary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-      >
-        {isChatOpen ? (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-          </svg>
-        )}
-      </motion.button>
-
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isChatOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 z-50 w-72 sm:w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
-          >
-            <div className="p-4 bg-primary-500 text-white">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <div className="h-10 w-10 rounded-full overflow-hidden ring-2 ring-white/20">
-                    <img
-                      src="/team/Chat.jpg"
-                      alt="Support Agent"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-400 rounded-full ring-2 ring-white"></div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Chat with us</h3>
-                  <p className="text-xs text-white/80">We're here to help!</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 h-64 overflow-y-auto">
-              {messages.length === 0 ? (
-                <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                  Start a conversation with our team
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {messages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
-                          msg.sender === 'user'
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        }`}
-                      >
-                        {msg.text}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex space-x-3">
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 px-4 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-                <button 
-                  type="submit"
-                  className="px-4 py-2.5 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600 transition-colors"
-                >
-                  Send
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Scroll to Top Button */}
       <AnimatePresence>

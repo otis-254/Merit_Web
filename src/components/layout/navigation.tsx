@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import { FaWhatsapp } from 'react-icons/fa'
+import { ThemeToggle } from '../ThemeToggle'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -50,22 +51,22 @@ export function Navigation() {
     <nav 
       className="fixed top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-lg dark:shadow-gray-800/30"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="container">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex shrink-0 items-center">
             <Link href="/" className="flex items-center">
               <img
                 src="/portfolio/Logo@3x.png"
                 alt="Merit Graphics Logo"
                 width={200}
                 height={100}
-                className="h-20 w-auto object-contain"
+                className="h-12 w-auto object-contain sm:h-14"
               />
             </Link>
           </div>
 
           {/* Desktop navigation */}
-          <div className="hidden md:flex flex-1 justify-center">
+          <div className="hidden xl:flex flex-1 justify-center">
             <div className="flex items-center space-x-4">
               {navigation.map((item) => (
                 <div key={item.name} className="relative">
@@ -126,10 +127,11 @@ export function Navigation() {
           </div>
 
           {/* CTA Buttons on the right */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             <Link
               href="/#quote-tool"
-              className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-semibold shadow-lg shadow-primary-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/30 hover:-translate-y-0.5 hover:from-primary-600 hover:to-secondary-600"
+              className="btn-primary header-quote-cta hidden xl:inline-flex"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -138,6 +140,7 @@ export function Navigation() {
             </Link>
             <a
               href="https://wa.me/254714531574"
+              aria-label="Contact Merit Graphics on WhatsApp"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors duration-300"
@@ -145,7 +148,7 @@ export function Navigation() {
               <FaWhatsapp className="w-5 h-5" />
             </a>
             {/* Mobile menu button */}
-            <div className="flex md:hidden ml-2">
+            <div className="ml-1 flex xl:hidden sm:ml-2">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="rounded-md p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -176,7 +179,7 @@ export function Navigation() {
               <Link
                 href="/#quote-tool"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold shadow-lg shadow-primary-500/25"
+                className="btn-brand w-full"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -247,4 +250,4 @@ export function Navigation() {
       </AnimatePresence>
     </nav>
   )
-} 
+}

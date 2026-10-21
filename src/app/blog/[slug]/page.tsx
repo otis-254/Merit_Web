@@ -6,15 +6,18 @@ import { BlogContent } from '@/components/blog/BlogContent'
 import { blogPosts, getBlogPostBySlug } from '@/data/blog-posts'
 
 type PageProps = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
+
+export const dynamicParams = false
 
 export function generateStaticParams() {
   return blogPosts.map(({ slug }) => ({ slug }))
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getBlogPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params
+  const post = getBlogPostBySlug(slug)
 
   if (!post) {
     notFound()

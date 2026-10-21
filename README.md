@@ -4,14 +4,14 @@ A modern, interactive website for Merit Graphics Solutions, showcasing their cre
 
 ## Features
 
-- 🎨 Modern, responsive design
-- ⚡ Next.js 14 with App Router
-- 🎭 Smooth animations with Framer Motion
-- 🎯 Interactive UI components
-- 📱 Mobile-first approach
-- 🌙 Dark mode support
-- 🖼️ Portfolio showcase
-- 📝 Contact form with validation
+- Modern, responsive design
+- Next.js 14 with App Router
+- Smooth animations with Framer Motion
+- Interactive UI components
+- Mobile-first approach
+- Dark mode support
+- Portfolio showcase
+- Contact form with validation
 
 ## Tech Stack
 
@@ -53,8 +53,13 @@ src/
 
 ## Development
 
+- [Design system and where it is applied](docs/design-system.md)
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript compiler 
+- `npm run type-check` - Run TypeScript compiler
+- `npm run test:quote` - Run the quote calculation tests
+- `npm run test:ui` - Run the portfolio and contact browser tests (install Chromium first with `npx playwright install chromium`)
+
+The browser tests start a Next.js development server and mock contact submissions; they do not send messages. Because this repository currently tracks some `.next` files, run the tests in a temporary project copy if you need to preserve those existing build artifacts.

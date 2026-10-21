@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-poppins)'],
+        sans: ['var(--font-jakarta)'],
+        display: ['var(--font-poppins)'],
       },
       colors: {
         primary: {

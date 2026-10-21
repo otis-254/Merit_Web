@@ -1,12 +1,9 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
 import './globals.css'
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-})
+import { PwaRegister } from '@/components/PwaRegister'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { CursorSpotlight } from '@/components/CursorSpotlight'
 
 export const metadata: Metadata = {
   title: {
@@ -98,14 +95,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${poppins.variable} font-sans antialiased`}>
-        {children}
+      <body className="font-sans antialiased">
+        <ThemeProvider>
+          <PwaRegister />
+          <CursorSpotlight />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
-} 
+}

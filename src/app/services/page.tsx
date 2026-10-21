@@ -181,7 +181,7 @@ export default function Services() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="ds-section bg-white dark:bg-gray-900">
         <div className="container">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Service Navigation */}
@@ -219,7 +219,7 @@ export default function Services() {
             </div>
 
             {/* Service Details */}
-            <div className="rounded-2xl bg-gray-50 p-8 dark:bg-gray-800 relative">
+            <div className="ds-card relative p-8">
               {/* Gradient Border */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-t-lg" />
               <AnimatePresence mode="wait">
@@ -267,7 +267,7 @@ export default function Services() {
                         <div className="mt-8">
                           <Link
                             href="/contact"
-                            className="inline-flex items-center rounded-md bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                            className="btn-primary"
                           >
                             Get Started
                             <svg
@@ -308,13 +308,13 @@ export default function Services() {
               <div className="mt-10 flex justify-center gap-4">
                 <Link
                   href="/contact"
-                  className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-primary-600 shadow-sm hover:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="btn-inverse"
                 >
                   Contact Us
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="rounded-md bg-primary-500 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+                  className="btn-primary"
                 >
                   View Our Work
                 </Link>
@@ -325,4 +325,4 @@ export default function Services() {
       </section>
     </MainLayout>
   )
-} 
+}

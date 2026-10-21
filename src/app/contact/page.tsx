@@ -1,12 +1,14 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MainLayout } from '../../components/layout/main-layout'
 import { FaCheckCircle } from 'react-icons/fa'
+import { FileText, Laptop, Palette, Paintbrush, Printer, Smartphone } from 'lucide-react'
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -27,12 +29,12 @@ const services = [
 ]
 
 const quoteServices = [
-  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: '🎨', description: 'Unique logo design with multiple concepts' },
-  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: '✨', description: 'Complete brand guidelines & identity system' },
-  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: '📱', description: 'Monthly social media graphics & content' },
-  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: '📋', description: 'Professional company profile / brochure' },
-  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: '💻', description: 'Responsive modern website design' },
-  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: '🖨️', description: 'Business cards, banners, flyers & more' },
+  { id: 'logo', name: 'Logo Design', baseMin: 5000, baseMax: 15000, icon: Palette, description: 'Unique logo design with multiple concepts' },
+  { id: 'brand', name: 'Brand Identity', baseMin: 15000, baseMax: 40000, icon: Paintbrush, description: 'Complete brand guidelines & identity system' },
+  { id: 'social', name: 'Social Media Package', baseMin: 10000, baseMax: 25000, icon: Smartphone, description: 'Monthly social media graphics & content' },
+  { id: 'profile', name: 'Company Profile', baseMin: 8000, baseMax: 20000, icon: FileText, description: 'Professional company profile / brochure' },
+  { id: 'website', name: 'Website', baseMin: 25000, baseMax: 80000, icon: Laptop, description: 'Responsive modern website design' },
+  { id: 'printing', name: 'Printing', baseMin: 3000, baseMax: 15000, icon: Printer, description: 'Business cards, banners, flyers & more' },
 ]
 
 const urgencyLevels = [
@@ -96,6 +98,8 @@ function buildWhatsAppMessage(selection: QuoteSelection, quote: { min: number; m
 }
 
 export default function Contact() {
+  const [formReady, setFormReady] = useState(false)
+  useEffect(() => setFormReady(true), [])
   const {
     register,
     handleSubmit,
@@ -106,6 +110,7 @@ export default function Contact() {
   })
 
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const successCloseRef = useRef<HTMLButtonElement>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [quoteSelection, setQuoteSelection] = useState<QuoteSelection>({
     services: [],
@@ -199,12 +204,12 @@ export default function Contact() {
         <div className="container">
           <div className="mx-auto max-w-5xl">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1.2fr] lg:items-start">
-              <div className="pt-6">
+              <div className="ds-card p-6 md:p-8">
                 <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
                   Contact Information
                 </h2>
                 <p className="mt-4 max-w-md text-lg leading-relaxed text-slate-600 dark:text-gray-400">
-                  Fill out the form and we'll get back to you within 24 hours.
+                  Tell us about your project, or reach us using the details below.
                 </p>
 
                 <div className="mt-10 space-y-7">
@@ -215,7 +220,7 @@ export default function Contact() {
                         <path d="m5 7 7 5 7-5" />
                       </svg>
                     </span>
-                    <span>meritmediapro007@gmail.com</span>
+                    <a className="min-w-0 break-all hover:text-primary-600 dark:hover:text-primary-400" href="mailto:meritmediapro007@gmail.com">meritmediapro007@gmail.com</a>
                   </div>
 
                   <div className="flex items-center gap-4 text-lg text-slate-700 dark:text-gray-200">
@@ -224,7 +229,7 @@ export default function Contact() {
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13.89.5 1.75 1.1 2.47l-1.3 1.3a15.9 15.9 0 0 0 7.48 7.48l1.3-1.3c.72.6 1.58 1 2.47 1.1A2 2 0 0 1 22 16.92Z" />
                       </svg>
                     </span>
-                    <span>(+254) 714-531 574</span>
+                    <a className="hover:text-primary-600 dark:hover:text-primary-400" href="tel:+254714531574">(+254) 714-531 574</a>
                   </div>
 
                   <div className="flex items-center gap-4 text-lg text-slate-700 dark:text-gray-200">
@@ -234,7 +239,7 @@ export default function Contact() {
                         <circle cx="12" cy="10" r="2.5" />
                       </svg>
                     </span>
-                    <span>Roysambu, Nairobi</span>
+                    <a className="hover:text-primary-600 dark:hover:text-primary-400" href="https://www.google.com/maps/search/?api=1&query=Roysambu%2C+Nairobi" target="_blank" rel="noopener noreferrer">Roysambu, Nairobi</a>
                   </div>
                 </div>
 
@@ -243,48 +248,53 @@ export default function Contact() {
                     Follow Us
                   </h3>
                   <div className="mt-5 flex flex-wrap gap-6 text-xl text-slate-700 dark:text-gray-200">
-                    <a href="#" className="transition-colors hover:text-primary-600 dark:hover:text-primary-400">
+                    <a href="https://www.instagram.com/meritgraphics_254?igsh=Z2M1dHM1eXdkYTB4&utm_source=qr" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary-600 dark:hover:text-primary-400">
                       Instagram
                     </a>
-                    <a href="#" className="transition-colors hover:text-primary-600 dark:hover:text-primary-400">
-                      LinkedIn
-                    </a>
-                    <a href="#" className="transition-colors hover:text-primary-600 dark:hover:text-primary-400">
-                      Twitter
+                    <a href="https://www.facebook.com/profile.php?id=100084530301305" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary-600 dark:hover:text-primary-400">
+                      Facebook
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-[26px] border border-slate-200 bg-[#f3f4f5] p-6 shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:border-gray-700 dark:bg-gray-800 md:p-8">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div className="ds-card p-6 md:p-8">
+                <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                  <p className="text-sm text-slate-600 dark:text-gray-400">Fields marked <span aria-hidden="true">*</span> are required.</p>
+                  <fieldset disabled={!formReady || isSubmitting} className="space-y-5">
                   <div>
                     <label htmlFor="name" className="mb-2 block text-base font-medium text-slate-700 dark:text-gray-200">
-                      Name
+                      Name <span aria-hidden="true">*</span>
                     </label>
                     <input
                       type="text"
                       id="name"
+                      required
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
                       {...register('name')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     />
                     {errors.name && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.name.message}</p>
+                      <p id="name-error" className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.name.message}</p>
                     )}
                   </div>
 
                   <div>
                     <label htmlFor="email" className="mb-2 block text-base font-medium text-slate-700 dark:text-gray-200">
-                      Email
+                      Email <span aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email"
                       id="email"
+                      required
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'email-error' : undefined}
                       {...register('email')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     />
                     {errors.email && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>
+                      <p id="email-error" className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>
                     )}
                   </div>
 
@@ -295,11 +305,13 @@ export default function Contact() {
                     <input
                       type="tel"
                       id="phone"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? 'phone-error' : undefined}
                       {...register('phone')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     />
                     {errors.phone && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.phone.message}</p>
+                      <p id="phone-error" className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.phone.message}</p>
                     )}
                   </div>
 
@@ -311,18 +323,21 @@ export default function Contact() {
                       type="text"
                       id="company"
                       {...register('company')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     />
                   </div>
 
                   <div>
                     <label htmlFor="service" className="mb-2 block text-base font-medium text-slate-700 dark:text-gray-200">
-                      Service Interested In
+                      Service Interested In <span aria-hidden="true">*</span>
                     </label>
                     <select
                       id="service"
+                      required
+                      aria-invalid={!!errors.service}
+                      aria-describedby={errors.service ? 'service-error' : undefined}
                       {...register('service')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     >
                       <option value="">Select a service</option>
                       {services.map((service) => (
@@ -332,30 +347,34 @@ export default function Contact() {
                       ))}
                     </select>
                     {errors.service && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.service.message}</p>
+                      <p id="service-error" className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.service.message}</p>
                     )}
                   </div>
 
                   <div>
                     <label htmlFor="message" className="mb-2 block text-base font-medium text-slate-700 dark:text-gray-200">
-                      Message
+                      Message <span aria-hidden="true">*</span>
                     </label>
                     <textarea
                       id="message"
+                      required
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
                       rows={5}
                       {...register('message')}
-                      className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 shadow-sm outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="ds-field"
                     />
                     {errors.message && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.message.message}</p>
+                      <p id="message-error" className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.message.message}</p>
                     )}
                   </div>
 
                   <div className="pt-2">
+                    <span role="status" aria-live="polite" className="sr-only">{isSubmitting ? 'Sending your message...' : ''}</span>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#f77a2c] px-5 py-3.5 text-base font-semibold text-white shadow-[0_10px_20px_rgba(247,122,44,0.25)] transition hover:bg-[#ea6d1d] focus:outline-none focus:ring-2 focus:ring-orange-200 disabled:cursor-not-allowed disabled:opacity-70"
+                      className="btn-primary w-full"
                     >
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                       <svg
@@ -369,9 +388,10 @@ export default function Contact() {
                       </svg>
                     </button>
                     {submitError && (
-                      <p className="mt-3 text-center text-sm text-red-600 dark:text-red-400">{submitError}</p>
+                      <p role="alert" className="mt-3 text-center text-sm text-red-600 dark:text-red-400">{submitError}</p>
                     )}
                   </div>
+                  </fieldset>
                 </form>
               </div>
             </div>
@@ -380,49 +400,37 @@ export default function Contact() {
       </section>
 
       {/* Success Modal */}
-      <AnimatePresence>
-        {showSuccessModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-            onClick={() => setShowSuccessModal(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-8 text-center"
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            >
+      <Dialog open={showSuccessModal} onClose={() => setShowSuccessModal(false)} initialFocus={successCloseRef} className="fixed inset-0 z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+        <div className="fixed inset-0 flex items-center justify-center overflow-y-auto p-4">
+            <DialogPanel className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-8 text-center">
               <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                   <FaCheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <DialogTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 Message Sent Successfully!
-              </h2>
+              </DialogTitle>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Thank you for reaching out to Merit Graphics Solutions.
               </p>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-6">
                 <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
-                  We will revert to you within 2 business hours.
+                  We have received your message and will be in touch.
                 </p>
               </div>
               <button
+                ref={successCloseRef}
+                data-autofocus
                 onClick={() => setShowSuccessModal(false)}
-                className="w-full rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+                className="btn-primary w-full"
               >
                 Close
               </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </DialogPanel>
+        </div>
+      </Dialog>
     </MainLayout>
   )
-} 
+}

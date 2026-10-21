@@ -81,7 +81,7 @@ export default function UIUX() {
   return (
     <MainLayout>
       {/* Hero Section with Gradient */}
-      <section className="relative py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
+      <section className="relative py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
         <div className="absolute inset-0 bg-black/50" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white mt-20">
@@ -89,7 +89,7 @@ export default function UIUX() {
             <p className="text-xl mb-8">Create intuitive, engaging, and user-friendly digital experiences that delight your users and drive business growth.</p>
             <Link 
               href="/contact" 
-              className="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all"
+              className="btn-inverse"
             >
               Start Your Design Project
             </Link>
@@ -103,7 +103,7 @@ export default function UIUX() {
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div className="text-blue-600 dark:text-blue-400 mb-4">{benefit.icon}</div>
+                <div className="text-primary-700 dark:text-primary-400 mb-4">{benefit.icon}</div>
                 <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{benefit.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300">{benefit.description}</p>
               </div>
@@ -118,7 +118,7 @@ export default function UIUX() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {deliverables.map((item, index) => (
               <div key={index} className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                <FaCheckCircle className="text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                <FaCheckCircle className="text-primary-700 dark:text-primary-400 flex-shrink-0" />
                 <span className="text-gray-700 dark:text-gray-200">{item}</span>
               </div>
             ))}
@@ -132,7 +132,7 @@ export default function UIUX() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {process.map((step, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div className="text-blue-600 dark:text-blue-400 mb-4">
+                <div className="text-primary-700 dark:text-primary-400 mb-4">
                   <FaFileAlt className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{step.title}</h3>
@@ -166,7 +166,7 @@ export default function UIUX() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Pricing</h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">UI/UX design packages start at $1,800</p>
-            <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors">Get a Custom Quote<ArrowRightIcon className="ml-2 h-5 w-5" /></Link>
+            <Link href="/contact" className="btn-primary">Get a Custom Quote<ArrowRightIcon className="h-5 w-5" /></Link>
           </div>
         </div>
       </section>
@@ -183,7 +183,7 @@ export default function UIUX() {
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-gray-900 dark:text-white">{faq.question}</span>
-                    <span className="text-blue-600 dark:text-blue-400">
+                    <span className="text-primary-700 dark:text-primary-400">
                       {openFaq === index ? '−' : '+'}
                     </span>
                   </div>
@@ -199,13 +199,13 @@ export default function UIUX() {
         </div>
       </section>
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
+      <section className="py-20 bg-gradient-to-r from-primary-700 to-secondary-500">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-6">Ready to Transform Your Digital Experience?</h2>
           <p className="text-white text-xl mb-8">Let's create a user experience that delights your customers.</p>
           <Link 
             href="/contact" 
-            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all"
+            className="btn-inverse"
           >
             Get Started Today
           </Link>
@@ -213,4 +213,4 @@ export default function UIUX() {
       </section>
     </MainLayout>
   )
-} 
+}

@@ -16,14 +16,14 @@ export default function BlogPage() {
       <div className="bg-white dark:bg-gray-900">
         <section className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 py-16">
           <div className="container text-center max-w-3xl mx-auto">
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Blog</h1>
-            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+            <h1 className="ds-section-title">Blog</h1>
+            <p className="ds-section-intro mt-4">
               Practical guides on branding, websites, and design pricing for businesses in Kenya.
             </p>
           </div>
         </section>
 
-        <section className="container py-16">
+        <section className="container ds-section">
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {sorted.map((post, index) => (
               <motion.article
@@ -32,7 +32,7 @@ export default function BlogPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                className="ds-card ds-card-hover flex h-full flex-col overflow-hidden"
               >
                 <Link href={`/blog/${post.slug}`} className="block aspect-[16/10] overflow-hidden">
                   <img
